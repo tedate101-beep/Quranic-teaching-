@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مستوى تقدم الطالب والورد اليومي | WM Engineering Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0f281e;
+            --accent-color: #2d6a4f;
+            --gold-color: #d4af37;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2b2b2b;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+            border-bottom: 3px solid var(--gold-color);
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Amiri', serif;
+            color: var(--gold-color);
+            font-size: 32px;
+        }
+
+        .nav-back {
+            position: absolute;
+            right: 20px;
+            top: 25px;
+            color: white;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .nav-back:hover {
+            background: var(--gold-color);
+            color: #000;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+
+        .grid-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-card i {
+            font-size: 30px;
+            color: var(--gold-color);
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .controls-card {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #4a5568;
+        }
+
+        select, input, button {
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--gold-color);
+            color: #000;
+        }
+
+        .surah-progress-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .progress-bar-bg {
+            background-color: #e2e8f0;
+            border-radius: 10px;
+            height: 10px;
+            width: 150px;
+            overflow: hidden;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--accent-color), var(--gold-color));
+            height: 100%;
+            width: 0%;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="nav-back"><i class="fas fa-arrow-right"></i> العودة للمصحف</a>
+    <h1>مستوى تقدم الطالب والأهداف</h1>
+    <p style="margin: 5px 0;">متابعة خطة حفظك وإنجازاتك اليومية في المصحف</p>
+</header>
+
+<div class="container">
+
+    <!-- كروت الإحصائيات -->
+    <div class="grid-stats">
+        <div class="stat-card">
+            <i class="fas fa-book-quran"></i>
+            <div class="value" id="completedSurahsCount">0</div>
+            <div class="label">سور تم إتمامها</div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-check-double"></i>
+            <div class="value" id="totalCompletedAyahs">0</div>
+            <div class="label">إجمالي الآيات المنجزة</div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-fire"></i>
+            <div class="value" id="dailyGoalText">غير محدد</div>
+            <div class="label">الورد اليومي الحالي</div>
+        </div>
+    </div>
+
+    <!-- إعداد الورد اليومي والإشعارات -->
+    <div class="card" style="border-right: 5px solid var(--accent-color);">
+        <h3 style="margin-top: 0; color: var(--primary-color);"><i class="fas fa-calendar-check" style="color: var(--gold-color);"></i> ضبط الورد اليومي والتنبيهات</h3>
+        <div class="controls-card">
+            <div class="control-group">
+                <label for="dailySurahSelect">سورة الورد اليومي:</label>
+                <select id="dailySurahSelect"></select>
+            </div>
+
+            <div class="control-group">
+                <label for="dailyCount">عدد الآيات اليومية:</label>
+                <input type="number" id="dailyCount" value="10" min="1" max="286">
+            </div>
+
+            <div class="control-group">
+                <label for="reminderTime">وقت التنبيه اليومي:</label>
+                <input type="time" id="reminderTime" value="20:00">
+            </div>
+
+            <div class="control-group" style="justify-content: flex-end;">
+                <button onclick="saveDailyGoal()"><i class="fas fa-bell"></i> حفظ الورد والتنبيت</button>
+            </div>
+        </div>
+        <div id="dailyGoalStatus" style="margin-top: 12px; font-size: 13px; color: #2d6a4f; font-weight: bold;"></div>
+    </div>
+
+    <!-- تفاصيل التقدم بالسور -->
+    <div class="card">
+        <h3 style="margin-top: 0; color: var(--primary-color);"><i class="fas fa-list-check" style="color: var(--gold-color);"></i> تفاصيل إنجازك في السور</h3>
+        <div id="surahProgressList">
+            <p style="text-align: center; color: #718096;">جاري تجميع بيانات التقدم الحالية...</p>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const quranSurahsList = [
+        "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس",
+        "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه",
+        "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم",
+        "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر",
+        "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق",
+        "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة",
+        "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج",
+        "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس",
+        "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد",
+        "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات",
+        "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر",
+        "المسد", "الإخلاص", "الفلق", "الناس"
+    ];
+
+    function init() {
+        const dailySelect = document.getElementById('dailySurahSelect');
+        dailySelect.innerHTML = '';
+        quranSurahsList.forEach((name, idx) => {
+            const opt = document.createElement('option');
+            opt.value = idx + 1;
+            opt.textContent = `${idx + 1}. سورة ${name}`;
+            dailySelect.appendChild(opt);
+        });
+
+        loadDailyGoal();
+        calculateOverallProgress();
+    }
+
+    function saveDailyGoal() {
+        const surah = document.getElementById('dailySurahSelect').value;
+        const count = document.getElementById('dailyCount').value;
+        const time = document.getElementById('reminderTime').value;
+
+        const goal = { surah, count, time };
+        localStorage.setItem('dailyGoal', JSON.stringify(goal));
+
+        if ("Notification" in window) {
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    document.getElementById('dailyGoalStatus').textContent = `✓ تم حفظ الورد بنجاح وتفعيل التنبيه عند الساعة ${time}`;
+                } else {
+                    document.getElementById('dailyGoalStatus').textContent = `✓ تم الحفظ (اسمح بالإشعارات لتصلك التنبيهات).`;
+                }
+            });
+        }
+        loadDailyGoal();
+    }
+
+    function loadDailyGoal() {
+        const goal = JSON.parse(localStorage.getItem('dailyGoal'));
+        if (goal) {
+            document.getElementById('dailySurahSelect').value = goal.surah;
+            document.getElementById('dailyCount').value = goal.count;
+            document.getElementById('reminderTime').value = goal.time;
+            document.getElementById('dailyGoalText').textContent = `${goal.count} آيات`;
+            document.getElementById('dailyGoalStatus').textContent = `الورد المباشر: سورة ${quranSurahsList[goal.surah - 1]} (${goal.count} آيات) - الساعة ${goal.time}`;
+        }
+    }
+
+    function calculateOverallProgress() {
+        let totalAyahsCount = 0;
+        let completedSurahs = 0;
+        const listContainer = document.getElementById('surahProgressList');
+        listContainer.innerHTML = '';
+
+        let hasData = false;
+
+        for (let i = 1; i <= 114; i++) {
+            const saved = localStorage.getItem(`progress_surah_${i}`);
+            if (saved) {
+                const ayahsArray = JSON.parse(saved);
+                if (ayahsArray.length > 0) {
+                    hasData = true;
+                    totalAyahsCount += ayahsArray.length;
+
+                    const item = document.createElement('div');
+                    item.className = 'surah-progress-item';
+                    item.innerHTML = `
+                        <span><strong>سورة ${quranSurahsList[i-1]}</strong> (تم إنجاز ${ayahsArray.length} آية)</span>
+                        <div>
+                            <span style="font-weight:bold; color: var(--accent-color);">${ayahsArray.length} آية</span>
+                        </div>
+                    `;
+                    listContainer.appendChild(item);
+                }
+            }
+        }
+
+        if (!hasData) {
+            listContainer.innerHTML = '<p style="text-align: center; color: #a0aec0;">لا توجد بيانات حفظ مسجلة حتى الآن. ابدأ بقراءة وتحديد الآيات المكتملة في المصحف!</p>';
+        }
+
+        document.getElementById('completedSurahsCount').textContent = completedSurahs;
+        document.getElementById('totalCompletedAyahs').textContent = totalAyahsCount;
+    }
+
+    init();
+</script>
+
+</body>
+</html>

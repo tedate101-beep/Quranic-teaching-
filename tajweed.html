@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أحكام التجويد المبسطة | WM Engineering Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0f281e;
+            --accent-color: #2d6a4f;
+            --gold-color: #d4af37;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2b2b2b;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 50px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+            border-bottom: 3px solid var(--gold-color);
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Amiri', serif;
+            color: var(--gold-color);
+            font-size: 32px;
+        }
+
+        .nav-back {
+            position: absolute;
+            right: 20px;
+            top: 25px;
+            color: white;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .nav-back:hover {
+            background: var(--gold-color);
+            color: #000;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .tajweed-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            border-right: 5px solid var(--gold-color);
+        }
+
+        .tajweed-section h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-family: 'Amiri', serif;
+            font-size: 26px;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 10px;
+        }
+
+        .rule-card {
+            background: #fdfbf7;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .rule-card h3 {
+            margin: 0 0 10px 0;
+            color: var(--accent-color);
+        }
+
+        .rule-card ul {
+            margin: 0;
+            padding-right: 20px;
+            line-height: 1.8;
+        }
+
+        .example-box {
+            background: #e8f5e9;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 8px;
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            color: #1b4332;
+        }
+
+        .cert-btn {
+            background-color: var(--gold-color);
+            color: #000;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Cairo', sans-serif;
+            transition: 0.3s;
+        }
+
+        .cert-btn:hover {
+            background-color: #b89628;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* Modal الشهادة */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 15px;
+        }
+
+        .modal-card {
+            background: white;
+            border-radius: 15px;
+            max-width: 750px;
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        #certCanvas {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin: 15px 0;
+        }
+
+        .btn-secondary {
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn-gold {
+            background-color: var(--gold-color);
+            color: #000;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="nav-back"><i class="fas fa-arrow-right"></i> العودة للمصحف</a>
+    <h1>دليل أحكام التجويد الميسر</h1>
+    <p style="margin: 5px 0;">شرح شامل ومبسط لأهم القواعد مع الأمثلة التطبيقية واستخراج الشهادات</p>
+</header>
+
+<div class="container">
+    
+    <!-- 1. أحكام النون الساكنة والتنوين -->
+    <div class="tajweed-section">
+        <h2><i class="fas fa-book-open" style="color: var(--gold-color);"></i> 1. أحكام النون الساكنة والتنوين</h2>
+        
+        <div class="rule-card">
+            <h3>الإظهار الحلقي</h3>
+            <p>إخراج النون الساكنة أو التنوين من مخرجها من غير غنة ظاهرية إذا جاء بعدها أحد حروف الحلق الستة: <b>(ء، هـ، ع، ح، غ، خ)</b>.</p>
+            <div class="example-box">مثال: ﴿مَنْ آمَنَ﴾ - ﴿مِنْ هَادٍ﴾ - ﴿عَلِيمٌ حَكِيمٌ﴾</div>
+        </div>
+
+        <div class="rule-card">
+            <h3>الإدغام</h3>
+            <p>دمج النون الساكنة أو التنوين بالحرف التالي بحيث يصيران حرفاً واحداً مشدداً. حروفه مجموعة في كلمة <b>(يرملون)</b>.</p>
+            <ul>
+                <li><b>إدغام بغنة:</b> في حروف (ينمو). <div class="example-box">مثال: ﴿مَن يَقُولُ﴾</div></li>
+                <li><b>إدغام بغير غنة:</b> في حرفي (ل، ر). <div class="example-box">مثال: ﴿مِن رَّبِّهِمْ﴾</div></li>
+            </ul>
+        </div>
+
+        <div class="rule-card">
+            <h3>الإقلاب</h3>
+            <p>قلب النون الساكنة أو التنوين ميماً مخفاة بغنة عند التقائها بحرف <b>(الباء)</b>.</p>
+            <div class="example-box">مثال: ﴿مِن بَعْدِ﴾ - ﴿سَمِيعٌ بَصِيرٌ﴾</div>
+        </div>
+
+        <div class="rule-card">
+            <h3>الإخفاء الحقيقي</h3>
+            <p>النطق بالنون الساكنة أو التنوين بحالة بين الإظهار والإدغام مع بقاء الغنة عند حروف الإخفاء الـ 15 المتبقية.</p>
+            <div class="example-box">مثال: ﴿مِن قَبْلُ﴾ - ﴿أَنفُسَكُمْ﴾</div>
+        </div>
+
+        <button class="cert-btn" onclick="openCertModal('أحكام النون الساكنة والتنوين')">
+            <i class="fas fa-award"></i> استلام شهادة إتقان أحكام النون الساكنة والتنوين
+        </button>
+    </div>
+
+    <!-- 2. أحكام الميم الساكنة -->
+    <div class="tajweed-section">
+        <h2><i class="fas fa-layer-group" style="color: var(--gold-color);"></i> 2. أحكام الميم الساكنة</h2>
+        
+        <div class="rule-card">
+            <h3>الإخفاء الشفوي</h3>
+            <p>تخفى الميم الساكنة مع الغنة إذا وقع بعدها حرف <b>(الباء)</b>.</p>
+            <div class="example-box">مثال: ﴿تَرْمِيهِم بِحِجَارَةٍ﴾</div>
+        </div>
+
+        <div class="rule-card">
+            <h3>إدغام المثلين الصغير</h3>
+            <p>تدغم الميم الساكنة في ميم متحركة بعدها لتصيرا ميماً واحدة مشددة بغنة.</p>
+            <div class="example-box">مثال: ﴿لَهُم مَّا يَشَاءُونَ﴾</div>
+        </div>
+
+        <div class="rule-card">
+            <h3>الإظهار الشفوي</h3>
+            <p>تظهر الميم الساكنة عند باقي الحروف الهجائية (وأشدها ظهوراً عند الفاء والواو).</p>
+            <div class="example-box">مثال: ﴿أَنْعَمْتَ عَلَيْهِمْ﴾</div>
+        </div>
+
+        <button class="cert-btn" onclick="openCertModal('أحكام الميم الساكنة')">
+            <i class="fas fa-award"></i> استلام شهادة إتقان أحكام الميم الساكنة
+        </button>
+    </div>
+
+    <!-- 3. أحكام المدود والقلقلة -->
+    <div class="tajweed-section">
+        <h2><i class="fas fa-wave-square" style="color: var(--gold-color);"></i> 3. أحكام المدود والقلقلة</h2>
+        
+        <div class="rule-card">
+            <h3>أنواع المدود الرئيسية</h3>
+            <ul>
+                <li><b>المد الطبيعي:</b> يمد بمقدار حركتين (مثل: ﴿قَالَ﴾، ﴿يَقُولُ﴾).</li>
+                <li><b>المد المتصل:</b> أن يأتي الهمز بعد حرف المد في كلمة واحدة، ويمد 4 أو 5 حركات (مثل: ﴿جَاءَ﴾).</li>
+                <li><b>المد المنفصل:</b> أن يكون حرف المد في كلمة والهمز في الكلمة التالية، ويمد 4 أو 5 حركات (مثل: ﴿إِنَّا أَعْطَيْنَاكَ﴾).</li>
+            </ul>
+        </div>
+
+        <div class="rule-card">
+            <h3>أحكام القلقلة</h3>
+            <p>اضطراب الصوت عند النطق بحرف ساكن من حروف القلقلة المجمعة في كلمة <b>(قُطْبُ جَدٍّ)</b>.</p>
+            <ul>
+                <li><b>قلقلة صغرى:</b> إذا كان الحرف الساكن في وسط الكلمة (مثل: ﴿يَقْطَعُونَ﴾).</li>
+                <li><b>قلقلة كبرى:</b> إذا وقف على الحرف في آخر الكلمة (مثل: ﴿الْفَلَقِ﴾).</li>
+            </ul>
+        </div>
+
+        <button class="cert-btn" onclick="openCertModal('أحكام المدود والقلقلة')">
+            <i class="fas fa-award"></i> استلام شهادة إتقان أحكام المدود والقلقلة
+        </button>
+    </div>
+
+</div>
+
+<!-- نافذة عرض الشهادة Modal -->
+<div class="modal-overlay" id="certModal">
+    <div class="modal-card">
+        <h2 style="color: var(--primary-color); margin-top: 0;"><i class="fas fa-crown" style="color: var(--gold-color);"></i> شهادة اجتياز حكم تجويدي</h2>
+        <p style="font-size: 14px; color: #555;">أدخل اسمك لاستخراج شهادة إتقان الحكم:</p>
+        
+        <div style="display: flex; gap: 10px; max-width: 400px; margin: 0 auto 15px auto;">
+            <input type="text" id="studentNameInput" placeholder="اكتب اسمك الثلاثي هنا..." value="طالب العلم" style="flex: 1; text-align: center; font-weight: bold;">
+            <button class="btn-gold" onclick="generateCertificate()"><i class="fas fa-sync"></i> تحديث</button>
+        </div>
+
+        <canvas id="certCanvas" width="900" height="600"></canvas>
+
+        <div style="display: flex; justify-content: center; gap: 12px; margin-top: 10px;">
+            <button class="btn-gold" onclick="downloadCertificate()"><i class="fas fa-download"></i> تحميل الشهادة PNG</button>
+            <button class="btn-secondary" onclick="closeCertModal()">إغلاق</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentRuleName = '';
+
+    function openCertModal(ruleName) {
+        currentRuleName = ruleName;
+        document.getElementById('certModal').style.display = 'flex';
+        generateCertificate();
+    }
+
+    function closeCertModal() {
+        document.getElementById('certModal').style.display = 'none';
+    }
+
+    function generateCertificate() {
+        const canvas = document.getElementById('certCanvas');
+        const ctx = canvas.getContext('2d');
+        const studentName = document.getElementById('studentNameInput').value || 'طالب العلم';
+
+        // خلفية تدرج راقي
+        const bgGrad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        bgGrad.addColorStop(0, '#fdfbf7');
+        bgGrad.addColorStop(1, '#f4eee0');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // إطار خارجي إسلامي
+        ctx.strokeStyle = '#c5a059';
+        ctx.lineWidth = 8;
+        ctx.strokeRect(25, 25, canvas.width - 50, canvas.height - 50);
+
+        ctx.strokeStyle = '#0f281e';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(35, 35, canvas.width - 70, canvas.height - 70);
+
+        // العناوين والنصوص
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#1b4332';
+        ctx.font = 'bold 28px "Amiri", serif';
+        ctx.fillText('بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ', canvas.width / 2, 85);
+
+        ctx.fillStyle = '#c5a059';
+        ctx.font = 'bold 38px "Cairo", sans-serif';
+        ctx.fillText('شَهَادَةُ إِتْقَانِ أَحْكَامِ التَّجْوِيدِ', canvas.width / 2, 145);
+
+        ctx.fillStyle = '#2b2b2b';
+        ctx.font = '20px "Cairo", sans-serif';
+        ctx.fillText('يشهد برنامج المصحف المعلم بأن الطالب/ة:', canvas.width / 2, 205);
+
+        ctx.fillStyle = '#0f281e';
+        ctx.font = 'bold 42px "Amiri", serif';
+        ctx.fillText(studentName, canvas.width / 2, 270);
+
+        ctx.fillStyle = '#2d3748';
+        ctx.font = '22px "Cairo", sans-serif';
+        ctx.fillText(`قد أتم دراسة وإتقان (${currentRuleName}) بنجاح`, canvas.width / 2, 345);
+
+        ctx.font = 'italic 18px "Cairo", sans-serif';
+        ctx.fillStyle = '#4a5568';
+        ctx.fillText('«وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا»', canvas.width / 2, 395);
+
+        const today = new Date().toLocaleDateString('ar-EG');
+        ctx.textAlign = 'right';
+        ctx.font = '16px "Cairo", sans-serif';
+        ctx.fillStyle = '#2b2b2b';
+        ctx.fillText(`حررت بتاريخ: ${today}`, canvas.width - 90, 480);
+
+        ctx.textAlign = 'left';
+        ctx.font = '16px "Cairo", sans-serif';
+        ctx.fillStyle = '#4a5568';
+        ctx.fillText('اعتماد المهندس المحاضر:', 90, 465);
+        ctx.font = 'bold 24px "Amiri", serif';
+        ctx.fillStyle = '#0f281e';
+        ctx.fillText('المهندس/ وائل محمد', 90, 505);
+    }
+
+    function downloadCertificate() {
+        const canvas = document.getElementById('certCanvas');
+        const link = document.createElement('a');
+        link.download = `شهادة_تجويد_${currentRuleName}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+    }
+</script>
+
+</body>
+</html>
