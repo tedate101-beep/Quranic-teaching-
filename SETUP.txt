@@ -1,0 +1,18 @@
+النسخة النهائية - المصحف المعلم التفاعلي الشامل
+
+1) في Firebase Console:
+   Authentication > Sign-in method > فعّل Email/Password.
+2) افتح Firestore Database وأنشئ قاعدة البيانات.
+3) ضع محتوى firestore.rules في تبويب Rules وانشره.
+4) ارفع الملفات الثلاثة على الاستضافة نفسها:
+   index_fixed.html
+   progress_fixed.html
+   tajweed_complete.html
+   manifest.json
+   sw.js
+5) افتح index_fixed.html من HTTPS/استضافة ويب، وليس من file:// عند اختبار Firebase.
+6) إنشاء الحساب يتطلب: الاسم الكامل + الهاتف + البريد + كلمة المرور.
+7) التقدم والتسميع واختبارات التجويد والورد اليومي تُحفظ للحساب.
+8) يمكن بعد ذلك تغليف الموقع كتطبيق Android WebView/Trusted Web Activity باستخدام رابط HTTPS.
+
+مهم: لا تضع بيانات دخول Firebase Admin أو Service Account داخل التطبيق. هذه النسخة تستخدم Web SDK ومفتاح Firebase client الظاهر في إعدادات التطبيق، مع حماية Firestore بقواعد المستخدم.

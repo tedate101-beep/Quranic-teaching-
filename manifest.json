@@ -1,0 +1,14 @@
+{
+  "name": "المصحف المعلم التفاعلي الشامل",
+  "short_name": "المصحف المعلم",
+  "description": "تطبيق تفاعلي للقرآن الكريم والتسميع والتجويد ومتابعة التقدم.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "index_fixed.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0f281e",
+  "theme_color": "#0f281e",
+  "orientation": "portrait-primary",
+  "icons": []
+}
