@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مستوى تقدم الطالب والورد اليومي | WM Engineering Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0f281e;
+            --accent-color: #2d6a4f;
+            --gold-color: #d4af37;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2b2b2b;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+            border-bottom: 3px solid var(--gold-color);
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Amiri', serif;
+            color: var(--gold-color);
+            font-size: 32px;
+        }
+
+        .nav-back {
+            position: absolute;
+            right: 20px;
+            top: 25px;
+            color: white;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .nav-back:hover {
+            background: var(--gold-color);
+            color: #000;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            margin-bottom: 20px;
+        }
+
+        .grid-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--accent-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-card i {
+            font-size: 30px;
+            color: var(--gold-color);
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            color: #718096;
+        }
+
+        .controls-card {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #4a5568;
+        }
+
+        select, input, button {
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--gold-color);
+            color: #000;
+        }
+
+        .surah-progress-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        .progress-bar-bg {
+            background-color: #e2e8f0;
+            border-radius: 10px;
+            height: 10px;
+            width: 150px;
+            overflow: hidden;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .progress-bar-fill {
+            background: linear-gradient(90deg, var(--accent-color), var(--gold-color));
+            height: 100%;
+            width: 0%;
+        }
+    
+.progress-hero{background:linear-gradient(135deg,#0f281e,#173d2c 55%,#2d6a4f);color:#fff;border-radius:18px;padding:24px;margin-bottom:22px;box-shadow:0 8px 25px rgba(15,40,30,.16)}
+.progress-hero h2{margin:0 0 6px;font-family:'Amiri',serif;color:#f0d778;font-size:28px}
+.overall-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.big-progress{flex:1;min-width:220px}.big-progress .bar{height:16px;background:rgba(255,255,255,.15);border-radius:99px;overflow:hidden}
+.big-progress .fill{height:100%;width:0;background:linear-gradient(90deg,#d4af37,#f6e39a);transition:width .5s}
+.big-percent{font-size:36px;font-weight:800;color:#f0d778;min-width:90px;text-align:center}
+.progress-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.progress-badge{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.13);padding:6px 10px;border-radius:999px;font-size:12px}
+.mini-progress{margin-top:8px;background:#e9eef0;height:8px;border-radius:99px;overflow:hidden}.mini-progress span{display:block;height:100%;background:linear-gradient(90deg,var(--accent-color),var(--gold-color));width:0}
+.surah-progress-item{display:block!important;padding:15px 4px!important}.surah-top{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.surah-name{font-weight:800;color:var(--primary-color)}.surah-count{font-weight:700;color:var(--accent-color);white-space:nowrap}
+.progress-line{display:flex;align-items:center;gap:10px;margin-top:9px}.progress-line .mini-progress{flex:1;margin:0}
+.progress-number{font-size:12px;color:#718096;min-width:55px;text-align:left}
+.goal-progress-card{margin-top:15px;background:#f7faf9;border:1px solid #dce9e2;border-radius:12px;padding:14px}
+.goal-title{font-weight:800;color:var(--primary-color);margin-bottom:7px}.goal-small{font-size:12px;color:#718096;margin-top:6px}
+.reset-btn{background:#8b2f2f!important;margin-top:12px}.reset-btn:hover{background:#b44444!important;color:#fff!important}
+.empty-state{text-align:center;padding:30px 15px;color:#718096}
+@media(max-width:600px){header h1{font-size:25px!important}.nav-back{right:10px;top:12px;padding:6px 9px;font-size:11px}header{padding:58px 12px 20px}.container{margin:18px auto;padding:0 10px}.card{padding:15px}.progress-hero{padding:18px}.big-percent{font-size:30px}.surah-top{align-items:flex-start}}
+
+</style>
+<link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="nav-back"><i class="fas fa-arrow-right"></i> العودة للمصحف</a>
+    <h1>مستوى تقدم الطالب والأهداف</h1>
+    <p style="margin: 5px 0;">متابعة خطة حفظك وإنجازاتك اليومية في المصحف</p>
+</header>
+
+<div class="container">
+
+<div class="progress-hero">
+<h2>📊 لوحة إنجازك في حفظ القرآن</h2>
+<p style="margin:0;color:#e8eee9;line-height:1.9">تابع الآيات التي أنجزتها، واعرف نسبة تقدمك في السور، وراقب وردك اليومي من مكان واحد.</p>
+<div class="overall-row" style="margin-top:18px">
+<div class="big-percent" id="overallPercent">0%</div>
+<div class="big-progress"><div class="bar"><div class="fill" id="overallProgressFill"></div></div>
+<div class="progress-meta"><span class="progress-badge" id="overallAyahText">0 / 6236 آية</span><span class="progress-badge" id="overallSurahText">0 / 114 سورة</span></div></div>
+</div></div>
+
+
+    <!-- كروت الإحصائيات -->
+    <div class="grid-stats">
+        <div class="stat-card">
+            <i class="fas fa-book-quran"></i>
+            <div class="value" id="completedSurahsCount">0</div>
+            <div class="label">سور تم إتمامها</div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-check-double"></i>
+            <div class="value" id="totalCompletedAyahs">0</div>
+            <div class="label">إجمالي الآيات المنجزة</div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-fire"></i>
+            <div class="value" id="dailyGoalText">غير محدد</div>
+            <div class="label">الورد اليومي الحالي</div>
+        </div>
+    </div>
+
+    <!-- إعداد الورد اليومي والإشعارات -->
+    <div class="card" style="border-right: 5px solid var(--accent-color);">
+        <h3 style="margin-top: 0; color: var(--primary-color);"><i class="fas fa-calendar-check" style="color: var(--gold-color);"></i> ضبط الورد اليومي والتنبيهات</h3>
+        <div class="controls-card">
+            <div class="control-group">
+                <label for="dailySurahSelect">سورة الورد اليومي:</label>
+                <select id="dailySurahSelect"></select>
+            </div>
+
+            <div class="control-group">
+                <label for="dailyCount">عدد الآيات اليومية:</label>
+                <input type="number" id="dailyCount" value="10" min="1" max="286">
+            </div>
+
+            <div class="control-group">
+                <label for="reminderTime">وقت التنبيه اليومي:</label>
+                <input type="time" id="reminderTime" value="20:00">
+            </div>
+
+            <div class="control-group" style="justify-content: flex-end;">
+                <button onclick="saveDailyGoal()"><i class="fas fa-bell"></i> حفظ الورد والتنبيت</button>
+            </div>
+        </div>
+        <div id="dailyGoalStatus" style="margin-top: 12px; font-size: 13px; color: #2d6a4f; font-weight: bold;"></div><div id="dailyGoalProgress" class="goal-progress-card" style="display:none"></div>
+    </div>
+
+    <!-- تفاصيل التقدم بالسور -->
+    <div class="card">
+        <h3 style="margin-top: 0; color: var(--primary-color);"><i class="fas fa-list-check" style="color: var(--gold-color);"></i> تفاصيل إنجازك في السور</h3>
+        <div id="surahProgressList">
+            <p style="text-align: center; color: #718096;">جاري تجميع بيانات التقدم الحالية...</p>
+        </div><div style="text-align:left"><button class="reset-btn" onclick="resetProgressPageOnly()"><i class="fas fa-trash"></i> تصفير بيانات التقدم</button></div>
+    </div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+  if (window.__QURAN_FIREBASE_AUTH__) return;
+  window.__QURAN_FIREBASE_AUTH__ = true;
+  const firebaseConfig = {
+    apiKey: "AIzaSyDs2ftWbd72s_rvCq_LCOvO9sgk94NVsoc",
+    authDomain: "eng-wael.firebaseapp.com",
+    projectId: "eng-wael",
+    storageBucket: "eng-wael.firebasestorage.app",
+    messagingSenderId: "176615840930",
+    appId: "1:176615840930:web:38265690bda1981b254bfb",
+    measurementId: "G-LFRVMZFDY8"
+  };
+
+  if (!window.firebase) {
+    console.error('Firebase SDK لم يتم تحميله.');
+    return;
+  }
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  try { auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); } catch(e) {}
+
+  const readyResolve = {};
+  const ready = new Promise(resolve => readyResolve.resolve = resolve);
+  let currentUser = null;
+  let booted = false;
+
+  const localKeys = () => {
+    const out = {};
+    for (let i=1;i<=114;i++) {
+      const p = localStorage.getItem(`progress_surah_${i}`);
+      const r = localStorage.getItem(`recited_surah_${i}`);
+      if (p || r) out[String(i)] = {
+        completed: p ? JSON.parse(p) : [],
+        recited: r ? JSON.parse(r) : []
+      };
+    }
+    return out;
+  };
+  const union = (a,b) => Array.from(new Set([...(a||[]),...(b||[])])).map(Number).sort((x,y)=>x-y);
+  const dateKey = () => new Date().toISOString().slice(0,10);
+
+  function ensureStyles(){
+    if(document.getElementById('quran-auth-styles')) return;
+    const s=document.createElement('style'); s.id='quran-auth-styles';
+    s.textContent=`
+      #quranAuthTop{position:fixed;top:12px;left:12px;z-index:5000;display:flex;gap:7px;align-items:center;font-family:Cairo,sans-serif}
+      #quranAuthTop button{border:0;border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer;background:#d4af37;color:#111;box-shadow:0 3px 12px #0002}
+      #quranAuthTop .auth-name{background:#0f281e;color:#fff;padding:8px 12px;border-radius:10px;font-size:12px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      #quranAuthOverlay{position:fixed;inset:0;background:linear-gradient(135deg,#06140eeb,#0f281ef5);z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px;font-family:Cairo,sans-serif}
+      #quranAuthCard{width:min(440px,100%);background:#fff;border-radius:22px;padding:25px;box-shadow:0 25px 80px #0008;text-align:right;direction:rtl;max-height:92vh;overflow:auto}
+      #quranAuthCard .auth-logo{width:66px;height:66px;border-radius:18px;background:#0f281e;color:#d4af37;display:grid;place-items:center;margin:0 auto 12px;font-size:30px}
+      #quranAuthCard h2{margin:0;text-align:center;color:#0f281e;font-family:Amiri,serif;font-size:29px}
+      #quranAuthCard .auth-sub{text-align:center;color:#667085;font-size:13px;margin:5px 0 18px}
+      #quranAuthCard input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #d0d5dd;border-radius:10px;margin:6px 0;font-family:Cairo,sans-serif;outline:none}
+      #quranAuthCard input:focus{border-color:#2d6a4f;box-shadow:0 0 0 3px #2d6a4f18}
+      #quranAuthCard .auth-primary{width:100%;padding:12px;border:0;border-radius:10px;background:#2d6a4f;color:#fff;font-weight:800;cursor:pointer;margin-top:8px}
+      #quranAuthCard .auth-secondary{width:100%;padding:10px;border:1px solid #d4af37;border-radius:10px;background:#fff;color:#0f281e;font-weight:700;cursor:pointer;margin-top:8px}
+      #quranAuthCard .auth-link{background:none;border:0;color:#2d6a4f;font-weight:700;cursor:pointer;padding:8px}
+      #quranAuthCard .auth-msg{min-height:22px;text-align:center;font-size:13px;font-weight:700;margin:7px 0;color:#b42318}
+      #quranAuthCard .auth-ok{color:#067647}
+      #quranAuthCard .auth-privacy{font-size:10px;color:#98a2b3;text-align:center;margin-top:12px;line-height:1.7}
+      body.auth-locked{overflow:hidden}
+    `;
+    document.head.appendChild(s);
+  }
+
+  function ensureUI(){
+    ensureStyles();
+    if(!document.getElementById('quranAuthTop')){
+      const top=document.createElement('div'); top.id='quranAuthTop';
+      top.innerHTML='<span class="auth-name" id="quranAuthName">حسابي</span><button id="quranAuthLogout">خروج</button>';
+      document.body.appendChild(top);
+      top.querySelector('#quranAuthLogout').onclick=()=>auth.signOut().then(()=>location.reload());
+    }
+    if(!document.getElementById('quranAuthOverlay')){
+      const ov=document.createElement('div'); ov.id='quranAuthOverlay';
+      ov.innerHTML=`<div id="quranAuthCard">
+        <div class="auth-logo"></div>
+        <h2 id="authTitle">تسجيل الدخول</h2>
+        <div class="auth-sub" id="authSub">سجّل دخولك لحفظ تقدمك ومزامنته على أجهزتك</div>
+        <div id="registerFields" style="display:none">
+          <input id="authName" type="text" autocomplete="name" placeholder="الاسم الكامل *">
+          <input id="authPhone" type="tel" autocomplete="tel" placeholder="رقم الهاتف *">
+        </div>
+        <input id="authEmail" type="email" autocomplete="email" placeholder="البريد الإلكتروني *">
+        <input id="authPassword" type="password" autocomplete="current-password" placeholder="كلمة المرور *">
+        <div id="authMsg" class="auth-msg"></div>
+        <button id="authMainBtn" class="auth-primary">تسجيل الدخول</button>
+        <button id="authForgotBtn" class="auth-link">نسيت كلمة المرور؟</button>
+        <button id="authToggleBtn" class="auth-secondary">إنشاء حساب جديد</button>
+        <div class="auth-privacy">بيانات حسابك وتقدمك تُحفظ في Firebase بشكل مرتبط بحسابك.</div>
+      </div>`;
+      document.body.appendChild(ov);
+      wireAuthUI();
+    }
+  }
+
+  function setMsg(msg, ok=false){const el=document.getElementById('authMsg'); if(el){el.textContent=msg;el.className='auth-msg'+(ok?' auth-ok':'');}}
+  function busy(v){const b=document.getElementById('authMainBtn'); if(b){b.disabled=v;b.textContent=v?'جاري التنفيذ...':(document.body.dataset.authMode==='register'?'إنشاء الحساب':'تسجيل الدخول');}}
+  function wireAuthUI(){
+    const toggle=document.getElementById('authToggleBtn');
+    const forgot=document.getElementById('authForgotBtn');
+    const main=document.getElementById('authMainBtn');
+    toggle.onclick=()=>{
+      const reg=document.body.dataset.authMode==='register';
+      document.body.dataset.authMode=reg?'login':'register';
+      document.getElementById('registerFields').style.display=reg?'none':'block';
+      document.getElementById('authTitle').textContent=reg?'تسجيل الدخول':'إنشاء حساب جديد';
+      document.getElementById('authSub').textContent=reg?'سجّل دخولك لاستكمال تقدمك':'أنشئ حسابك واحفظ تقدم القرآن والتجويد على أي جهاز';
+      toggle.textContent=reg?'إنشاء حساب جديد':'لدي حساب بالفعل';
+      forgot.style.display=reg?'block':'none';
+      setMsg('');
+      main.textContent=reg?'تسجيل الدخول':'إنشاء الحساب';
+    };
+    forgot.onclick=async()=>{
+      const email=document.getElementById('authEmail').value.trim();
+      if(!email) return setMsg('اكتب بريدك الإلكتروني أولاً.');
+      try{await auth.sendPasswordResetEmail(email);setMsg('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك.',true);}catch(e){setMsg(friendlyError(e));}
+    };
+    main.onclick=async()=>{
+      const mode=document.body.dataset.authMode||'login';
+      const email=document.getElementById('authEmail').value.trim();
+      const password=document.getElementById('authPassword').value;
+      if(!email||!password) return setMsg('أدخل البريد الإلكتروني وكلمة المرور.');
+      if(mode==='register'){
+        const name=document.getElementById('authName').value.trim();
+        const phone=document.getElementById('authPhone').value.trim();
+        if(!name||!phone) return setMsg('الاسم ورقم الهاتف مطلوبان.');
+        if(password.length<6) return setMsg('كلمة المرور يجب أن تكون 6 أحرف على الأقل.');
+        busy(true);
+        try{
+          const cred=await auth.createUserWithEmailAndPassword(email,password);
+          await cred.user.updateProfile({displayName:name});
+          await setProfile(cred.user,{name,phone,email});
+          await syncLocalToCloud();
+          setMsg('تم إنشاء الحساب بنجاح. جاري فتح التطبيق...',true);
+          setTimeout(()=>location.reload(),500);
+        }catch(e){setMsg(friendlyError(e));busy(false);}
+      }else{
+        busy(true);
+        try{
+          await auth.signInWithEmailAndPassword(email,password);
+          setMsg('تم تسجيل الدخول. جاري فتح التطبيق...',true);
+          setTimeout(()=>location.reload(),500);
+        }catch(e){setMsg(friendlyError(e));busy(false);}
+      }
+    };
+  }
+
+  function friendlyError(e){
+    const c=e&&e.code||'';
+    const m={
+      'auth/invalid-email':'البريد الإلكتروني غير صحيح.',
+      'auth/user-not-found':'لا يوجد حساب بهذا البريد.',
+      'auth/wrong-password':'كلمة المرور غير صحيحة.',
+      'auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة.',
+      'auth/email-already-in-use':'هذا البريد مستخدم بالفعل.',
+      'auth/weak-password':'كلمة المرور ضعيفة؛ استخدم 6 أحرف على الأقل.',
+      'auth/too-many-requests':'محاولات كثيرة. حاول مرة أخرى بعد قليل.',
+      'auth/network-request-failed':'تأكد من اتصال الإنترنت.',
+      'auth/operation-not-allowed':'فعّل Email/Password من Firebase Authentication.',
+      'auth/api-key-not-valid.-please-pass-a-valid-api-key.':'مفتاح Firebase غير صحيح.'
+    }; return m[c]||('حدث خطأ: '+(e&&e.message?e.message:'تعذر تنفيذ العملية.'));
+  }
+
+  async function setProfile(user, extra={}){
+    if(!user) return;
+    const data={
+      name:extra.name!==undefined?extra.name:(user.displayName||localStorage.getItem('studentName')||''), phone:extra.phone!==undefined?extra.phone:(localStorage.getItem('studentPhone')||''), email:user.email||extra.email||'',
+      uid:user.uid, lastSeen:firebase.firestore.FieldValue.serverTimestamp()
+    };
+    await db.collection('users').doc(user.uid).set(data,{merge:true});
+    localStorage.setItem('studentName',data.name);
+    localStorage.setItem('studentPhone',data.phone);
+  }
+
+  async function syncLocalToCloud(){
+    const user=auth.currentUser; if(!user||user.isAnonymous) return;
+    const local=localKeys();
+    if(Object.keys(local).length){
+      const ref=db.collection('users').doc(user.uid);
+      const snap=await ref.get(); const cloud=(snap.exists&&snap.data().quranProgress)||{};
+      const merged={...cloud};
+      for(const [s,v] of Object.entries(local)) merged[s]={completed:union(cloud[s]?.completed,v.completed),recited:union(cloud[s]?.recited,v.recited),updatedAt:new Date().toISOString()};
+      await ref.set({quranProgress:merged,lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+      for(const [s,v] of Object.entries(merged)){
+        localStorage.setItem(`progress_surah_${s}`,JSON.stringify(v.completed||[]));
+        localStorage.setItem(`recited_surah_${s}`,JSON.stringify(v.recited||[]));
+      }
+    }
+  }
+
+  async function restoreCloudToLocal(){
+    const user=auth.currentUser; if(!user||user.isAnonymous) return;
+    const snap=await db.collection('users').doc(user.uid).get();
+    if(!snap.exists) return;
+    const data=snap.data()||{};
+    if(data.name) localStorage.setItem('studentName',data.name);
+    if(data.phone) localStorage.setItem('studentPhone',data.phone);
+    const qp=data.quranProgress||{};
+    for(const [s,v] of Object.entries(qp)){
+      localStorage.setItem(`progress_surah_${s}`,JSON.stringify(v.completed||[]));
+      localStorage.setItem(`recited_surah_${s}`,JSON.stringify(v.recited||[]));
+    }
+    if(data.settings?.dailyGoal) localStorage.setItem('dailyGoal',JSON.stringify(data.settings.dailyGoal));
+  }
+
+  async function boot(user){
+    currentUser=user;
+    ensureUI();
+    const overlay=document.getElementById('quranAuthOverlay');
+    const top=document.getElementById('quranAuthTop');
+    if(user){
+      document.body.classList.remove('auth-locked');
+      if(overlay) overlay.style.display='none';
+      if(top) top.style.display='flex';
+      const name=user.displayName||localStorage.getItem('studentName')||user.email||'حسابي';
+      const n=document.getElementById('quranAuthName'); if(n)n.textContent=name;
+      if(!user.isAnonymous){
+        try { await setProfile(user); await syncLocalToCloud(); await restoreCloudToLocal(); } catch(e){console.warn('Firebase sync:',e);}
+      }
+    }else{
+      document.body.classList.add('auth-locked');
+      if(overlay) overlay.style.display='flex';
+      if(top) top.style.display='none';
+    }
+    if(!booted){booted=true;readyResolve.resolve(user?user.uid:null);}
+  }
+
+  window.QuranFirebase={
+    uid:null, ready,
+    get user(){return currentUser;},
+    get isLoggedIn(){return !!currentUser&&!currentUser.isAnonymous;},
+    auth,db,
+    async loadQuranProgress(s){await ready;if(!currentUser||currentUser.isAnonymous)return null;const snap=await db.collection('users').doc(currentUser.uid).get();return snap.exists?(snap.data().quranProgress||{})[String(s)]||null:null;},
+    async loadAllQuranProgress(){await ready;if(!currentUser||currentUser.isAnonymous)return null;const snap=await db.collection('users').doc(currentUser.uid).get();return snap.exists()?(snap.data().quranProgress||{}):{};},
+    async saveQuranProgress(s,completed,recited){await ready;if(!currentUser||currentUser.isAnonymous)return false;await db.collection('users').doc(currentUser.uid).set({quranProgress:{[String(s)]:{completed:Array.from(completed||[]),recited:Array.from(recited||[]),updatedAt:new Date().toISOString()}},lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});return true;},
+    async saveDailyCompleted(date,s,completed){await ready;if(!currentUser||currentUser.isAnonymous)return false;await db.collection('users').doc(currentUser.uid).collection('daily').doc(`${date}_${s}`).set({date,surah:Number(s),completed:Array.from(completed||[]),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});return true;},
+    async loadDailyCompleted(date,s){await ready;if(!currentUser||currentUser.isAnonymous)return null;const x=await db.collection('users').doc(currentUser.uid).collection('daily').doc(`${date}_${s}`).get();return x.exists()?(x.data().completed||[]):null;},
+    async saveDailyGoal(goal){await ready;if(!currentUser||currentUser.isAnonymous)return false;await db.collection('users').doc(currentUser.uid).collection('settings').doc('dailyGoal').set({...goal,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});return true;},
+    async loadDailyGoal(){await ready;if(!currentUser||currentUser.isAnonymous)return null;const x=await db.collection('users').doc(currentUser.uid).collection('settings').doc('dailyGoal').get();return x.exists()?x.data():null;},
+    async saveTajweedPass(id,passed=true){await ready;if(!currentUser||currentUser.isAnonymous)return false;await db.collection('users').doc(currentUser.uid).collection('tajweed').doc(String(id)).set({passed,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});return true;},
+    async loadTajweedPass(id){await ready;if(!currentUser||currentUser.isAnonymous)return null;const x=await db.collection('users').doc(currentUser.uid).collection('tajweed').doc(String(id)).get();return x.exists()?x.data().passed===true:null;},
+    async deleteAllCloudProgress(){await ready;if(!currentUser||currentUser.isAnonymous)return false;const ref=db.collection('users').doc(currentUser.uid);const snap=await ref.get();const qp=snap.exists()?(snap.data().quranProgress||{}):{};const updates={};Object.keys(qp).forEach(k=>updates[`quranProgress.${k}`]=firebase.firestore.FieldValue.delete());await ref.update(updates).catch(()=>{});const daily=await ref.collection('daily').get();const batch=db.batch();daily.forEach(d=>batch.delete(d.ref));const taj=await ref.collection('tajweed').get();taj.forEach(d=>batch.delete(d.ref));await batch.commit();return true;}
+  };
+  auth.onAuthStateChanged(boot);
+  if ('serviceWorker' in navigator && location.protocol === 'https:') { navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
+})();
+</script>
+
+
+
+<script>
+
+const quranSurahsList = [
+        "الفاتحة", "البقرة", "آل عمران", "النساء", "المائدة", "الأنعام", "الأعراف", "الأنفال", "التوبة", "يونس",
+        "هود", "يوسف", "الرعد", "إبراهيم", "الحجر", "النحل", "الإسراء", "الكهف", "مريم", "طه",
+        "الأنبياء", "الحج", "المؤمنون", "النور", "الفرقان", "الشعراء", "النمل", "القصص", "العنكبوت", "الروم",
+        "لقمان", "السجدة", "الأحزاب", "سبأ", "فاطر", "يس", "الصافات", "ص", "الزمر", "غافر",
+        "فصلت", "الشورى", "الزخرف", "الدخان", "الجاثية", "الأحقاف", "محمد", "الفتح", "الحجرات", "ق",
+        "الذاريات", "الطور", "النجم", "القمر", "الرحمن", "الواقعة", "الحديد", "المجادلة", "الحشر", "الممتحنة",
+        "الصف", "الجمعة", "المنافقون", "التغابن", "الطلاق", "التحريم", "الملك", "القلم", "الحاقة", "المعارج",
+        "نوح", "الجن", "المزمل", "المدثر", "القيامة", "الإنسان", "المرسلات", "النبأ", "النازعات", "عبس",
+        "التكوير", "الانفطار", "المطففين", "الانشقاق", "البروج", "الطارق", "الأعلى", "الغاشية", "الفجر", "البلد",
+        "الشمس", "الليل", "الضحى", "الشرح", "التين", "العلق", "القدر", "البينة", "الزلزلة", "العاديات",
+        "القارعة", "التكاثر", "العصر", "الهمزة", "الفيل", "قريش", "الماعون", "الكوثر", "الكافرون", "النصر",
+        "المسد", "الإخلاص", "الفلق", "الناس"
+    ];
+
+// عدد آيات السور بالترتيب.
+const surahAyahCounts = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,111,110,98,135,112,78,118,64,77,227,93,88,69,60,34,30,73,54,45,83,182,88,75,85,54,53,89,59,37,35,38,29,18,45,60,49,62,55,78,96,29,22,24,13,14,11,11,18,12,12,30,52,52,44,28,28,20,56,40,31,50,40,46,42,29,19,36,25,22,17,19,26,30,20,15,21,11,8,8,19,5,8,8,11,11,8,3,9,5,4,7,3,6,3,5,4,5,6]
+
+function todayKey(){ return new Date().toISOString().slice(0,10); }
+function getDailyCompleted(surahNumber){
+    try{
+        const raw=localStorage.getItem(`daily_completed_${todayKey()}_${surahNumber}`);
+        const arr=raw?JSON.parse(raw):[];
+        return Array.isArray(arr)?[...new Set(arr.map(Number).filter(Number.isFinite))]:[];
+    }catch(e){return [];}
+}
+
+function getCompletedAyahs(surahNumber){
+    try{
+        const raw=localStorage.getItem(`progress_surah_${surahNumber}`);
+        if(!raw)return[];
+        const arr=JSON.parse(raw);
+        return Array.isArray(arr)?[...new Set(arr.map(Number).filter(Number.isFinite))]:[];
+    }catch(e){return[];}
+}
+
+function init(){
+    const dailySelect=document.getElementById('dailySurahSelect');
+    dailySelect.innerHTML='';
+    quranSurahsList.forEach((name,idx)=>{
+        const opt=document.createElement('option');
+        opt.value=idx+1; opt.textContent=`${idx+1}. سورة ${name}`;
+        dailySelect.appendChild(opt);
+    });
+    loadDailyGoal();
+    calculateOverallProgress();
+    if (window.QuranFirebase) {
+        window.QuranFirebase.ready.then(async () => {
+            const allProgress = await window.QuranFirebase.loadAllQuranProgress();
+            if (allProgress && typeof allProgress === 'object') {
+                Object.entries(allProgress).forEach(([surah, item]) => {
+                    if (!item) return;
+                    if (Array.isArray(item.completed)) localStorage.setItem(`progress_surah_${surah}`, JSON.stringify(item.completed));
+                    if (Array.isArray(item.recited)) localStorage.setItem(`recited_surah_${surah}`, JSON.stringify(item.recited));
+                });
+            }
+            const currentGoal = await window.QuranFirebase.loadDailyGoal();
+            if (currentGoal && Number.isFinite(Number(currentGoal.surah))) {
+                localStorage.setItem('dailyGoal', JSON.stringify({
+                    surah:Number(currentGoal.surah), count:Number(currentGoal.count)||1, time:currentGoal.time||'20:00'
+                }));
+                loadDailyGoal();
+            }
+            calculateOverallProgress();
+        });
+    }
+}
+
+function saveDailyGoal(){
+    const surah=Number(document.getElementById('dailySurahSelect').value);
+    const count=Math.max(1,Number(document.getElementById('dailyCount').value)||1);
+    const time=document.getElementById('reminderTime').value;
+    const goal={surah,count,time};
+    localStorage.setItem('dailyGoal',JSON.stringify(goal));
+    if (window.QuranFirebase) window.QuranFirebase.saveDailyGoal(goal);
+    document.getElementById('dailyGoalStatus').textContent=`✓ تم حفظ الورد: سورة ${quranSurahsList[surah-1]} — ${count} آيات يوميًا — الساعة ${time}`;
+    if("Notification" in window) Notification.requestPermission().catch(()=>{});
+    loadDailyGoal();
+}
+
+function loadDailyGoal(){
+    const raw=localStorage.getItem('dailyGoal');
+    const goal=raw?JSON.parse(raw):null;
+    if(!goal){
+        document.getElementById('dailyGoalText').textContent='غير محدد';
+        document.getElementById('dailyGoalProgress').style.display='none';
+        return;
+    }
+    document.getElementById('dailySurahSelect').value=goal.surah;
+    document.getElementById('dailyCount').value=goal.count;
+    document.getElementById('reminderTime').value=goal.time;
+    document.getElementById('dailyGoalText').textContent=`${goal.count} آيات`;
+    document.getElementById('dailyGoalStatus').textContent=`الورد الحالي: سورة ${quranSurahsList[goal.surah-1]} — ${goal.count} آيات — الساعة ${goal.time}`;
+    updateDailyGoalProgress(goal);
+}
+
+function updateDailyGoalProgress(goal){
+    const box=document.getElementById('dailyGoalProgress');
+    const localCompleted=getDailyCompleted(goal.surah);
+    const completed=localCompleted.length;
+    if (window.QuranFirebase) {
+        window.QuranFirebase.loadDailyCompleted(todayKey(), goal.surah).then(cloud => {
+            if (Array.isArray(cloud)) {
+                localStorage.setItem(`daily_completed_${todayKey()}_${goal.surah}`, JSON.stringify(cloud));
+                const latest=cloud.length;
+                const latestTarget=Math.min(Number(goal.count), surahAyahCounts[goal.surah-1]||1);
+                const latestPercent=Math.min(100,Math.round(Math.min(latest,latestTarget)/latestTarget*100));
+                box.innerHTML=`<div class="goal-title">🎯 تقدمك في سورة ${quranSurahsList[goal.surah-1]}</div><div class="mini-progress"><span style="width:${latestPercent}%"></span></div><div class="goal-small">تم إنجاز ${latest} آية اليوم — الهدف ${latestTarget} آيات. ${latestPercent>=100?'🎉 حققت العدد المحدد للورد.':`باقي ${latestTarget-Math.min(latest,latestTarget)} آية للوصول إلى هدف الورد.`}</div>`;
+            }
+        });
+    }
+    const total=surahAyahCounts[goal.surah-1]||1;
+    const target=Math.min(Number(goal.count),total);
+    const done=Math.min(completed,target);
+    const percent=Math.min(100,Math.round(done/target*100));
+    box.style.display='block';
+    box.innerHTML=`<div class="goal-title">🎯 تقدمك في سورة ${quranSurahsList[goal.surah-1]}</div>
+    <div class="mini-progress"><span style="width:${percent}%"></span></div>
+    <div class="goal-small">تم إنجاز ${completed} من ${total} آية في السورة — الهدف اليومي ${target} آيات.
+    ${percent>=100?' 🎉 حققت العدد المحدد للورد.':` باقي ${target-done} آية للوصول إلى هدف الورد.`}</div>`;
+}
+
+function calculateOverallProgress(){
+    let totalCompleted=0,completedSurahs=0,hasData=false;
+    const listContainer=document.getElementById('surahProgressList');
+    listContainer.innerHTML='';
+
+    for(let i=1;i<=114;i++){
+        const completed=getCompletedAyahs(i),total=surahAyahCounts[i-1]||0;
+        if(completed.length>0){
+            hasData=true; totalCompleted+=completed.length;
+            const percent=total?Math.min(100,Math.round(completed.length/total*100)):0;
+            if(completed.length>=total&&total>0)completedSurahs++;
+            const item=document.createElement('div');
+            item.className='surah-progress-item';
+            item.innerHTML=`<div class="surah-top"><span class="surah-name">سورة ${quranSurahsList[i-1]}</span>
+            <span class="surah-count">${completed.length} / ${total} آية — ${percent}%</span></div>
+            <div class="progress-line"><div class="mini-progress"><span style="width:${percent}%"></span></div><span class="progress-number">${percent}%</span></div>`;
+            listContainer.appendChild(item);
+        }
+    }
+
+    if(!hasData){
+        listContainer.innerHTML=`<div class="empty-state"><i class="fas fa-book-open" style="font-size:38px;color:var(--gold-color);margin-bottom:12px"></i>
+        <div style="font-weight:bold;color:var(--primary-color);margin-bottom:6px">لسه مفيش إنجازات مسجلة</div>
+        <div>ابدأ من صفحة المصحف، وعند إتمام الآيات سيتم تحديث لوحة التقدم تلقائيًا.</div></div>`;
+    }
+
+    const overallPercent=Math.min(100,Math.round(totalCompleted/TOTAL_QURAN_AYAHS*100));
+    document.getElementById('completedSurahsCount').textContent=completedSurahs;
+    document.getElementById('totalCompletedAyahs').textContent=totalCompleted;
+    document.getElementById('overallPercent').textContent=`${overallPercent}%`;
+    document.getElementById('overallProgressFill').style.width=`${overallPercent}%`;
+    document.getElementById('overallAyahText').textContent=`${totalCompleted} / ${TOTAL_QURAN_AYAHS} آية`;
+    document.getElementById('overallSurahText').textContent=`${completedSurahs} / 114 سورة`;
+
+    const goalRaw=localStorage.getItem('dailyGoal');
+    if(goalRaw)updateDailyGoalProgress(JSON.parse(goalRaw));
+}
+
+function resetProgressPageOnly(){
+    if(!confirm('هل تريد حذف بيانات التقدم المحفوظة لهذا المصحف؟ لا يمكن التراجع عن هذا الإجراء.'))return;
+    for(let i=1;i<=114;i++){ localStorage.removeItem(`progress_surah_${i}`); localStorage.removeItem(`recited_surah_${i}`); }
+    calculateOverallProgress();
+}
+init();
+
+</script>
+
+</body>
+</html>
