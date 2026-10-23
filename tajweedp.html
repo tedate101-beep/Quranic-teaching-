@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أحكام التجويد المبسطة | WM Engineering Group</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0f281e;
+            --accent-color: #2d6a4f;
+            --gold-color: #d4af37;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2b2b2b;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 50px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 25px 15px;
+            border-bottom: 3px solid var(--gold-color);
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-family: 'Amiri', serif;
+            color: var(--gold-color);
+            font-size: 32px;
+        }
+
+        .nav-back {
+            position: absolute;
+            right: 20px;
+            top: 25px;
+            color: white;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .nav-back:hover {
+            background: var(--gold-color);
+            color: #000;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .tajweed-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            border-right: 5px solid var(--gold-color);
+        }
+
+        .tajweed-section h2 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-family: 'Amiri', serif;
+            font-size: 26px;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 10px;
+        }
+
+        .rule-card {
+            background: #fdfbf7;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .rule-card h3 {
+            margin: 0 0 10px 0;
+            color: var(--accent-color);
+        }
+
+        .rule-card ul {
+            margin: 0;
+            padding-right: 20px;
+            line-height: 1.8;
+        }
+
+        .example-box {
+            background: #e8f5e9;
+            padding: 8px 12px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 8px;
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            color: #1b4332;
+        }
+
+        .cert-btn {
+            background-color: var(--gold-color);
+            color: #000;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Cairo', sans-serif;
+            transition: 0.3s;
+        }
+
+        .cert-btn:hover {
+            background-color: #b89628;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* Modal الشهادة */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 15px;
+        }
+
+        .modal-card {
+            background: white;
+            border-radius: 15px;
+            max-width: 750px;
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        #certCanvas {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin: 15px 0;
+        }
+
+        .btn-secondary {
+            background-color: #4a5568;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn-gold {
+            background-color: var(--gold-color);
+            color: #000;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* تحسينات الهاتف ونسخة التطبيق */
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        button, input { -webkit-tap-highlight-color: transparent; }
+        .study-progress {
+            background: linear-gradient(135deg, #0f281e, #1b4332);
+            color: #fff;
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 18px rgba(0,0,0,.08);
+        }
+        .progress-head { display:flex; justify-content:space-between; gap:10px; align-items:center; margin-bottom:10px; }
+        .progress-track { height:10px; background:rgba(255,255,255,.18); border-radius:20px; overflow:hidden; }
+        .progress-fill { height:100%; width:0; background:var(--gold-color); transition:width .35s ease; }
+        .rule-card { transition: transform .2s ease, box-shadow .2s ease; }
+        .rule-card:hover { transform: translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.06); }
+        .section-status {
+            display:inline-flex; align-items:center; gap:6px; margin-top:12px;
+            padding:6px 10px; border-radius:20px; font-size:12px; font-weight:700;
+            background:#edf2f7; color:#4a5568;
+        }
+        .section-status.done { background:#e8f5e9; color:#1b7a3c; }
+        .cert-btn.locked { opacity:.6; }
+        .quiz-box {
+            display:none; margin-top:18px; padding:18px; border-radius:12px;
+            background:#f8fafc; border:1px solid #dfe7e2; text-align:right;
+        }
+        .quiz-question {
+            background:#fff; border:1px solid #e2e8f0; border-radius:10px;
+            padding:13px; margin-bottom:12px;
+        }
+        .quiz-question p { margin:0 0 10px; font-weight:700; color:#0f281e; }
+        .quiz-option {
+            display:block; width:100%; text-align:right; background:#fff; color:#2b2b2b;
+            border:1px solid #d8dee6; margin:7px 0; padding:10px 12px; border-radius:8px;
+            cursor:pointer; font-family:'Cairo',sans-serif;
+        }
+        .quiz-option:hover { background:#f1f8e9; border-color:var(--accent-color); }
+        .quiz-option.selected { background:#e8f5e9; border-color:var(--accent-color); }
+        .quiz-result { margin-top:12px; font-weight:700; }
+        .certificate-meta {
+            display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;
+            font-size:12px; color:#4a5568;
+        }
+        @media (max-width: 650px) {
+            header { padding:20px 12px 24px; }
+            header h1 { font-size:25px; padding-top:42px; }
+            .nav-back { right:10px; top:10px; font-size:12px; padding:7px 10px; }
+            .container { margin:18px auto; padding:0 10px; }
+            .tajweed-section { padding:17px 14px; border-right-width:4px; }
+            .tajweed-section h2 { font-size:22px; line-height:1.5; }
+            .example-box { display:block; line-height:1.8; }
+            .cert-btn { width:100%; justify-content:center; margin-top:15px; }
+            .modal-overlay { padding:8px; }
+            .modal-card { padding:14px; max-height:94vh; }
+            #certCanvas { width:100%; }
+            .certificate-meta { grid-template-columns:1fr; }
+            .quiz-box { padding:12px; }
+        }
+
+    
+/* ===== Expanded Tajweed Guide ===== */
+.lesson-details{margin-top:18px;display:grid;gap:14px}
+.info-box{background:#f7f9f7;border:1px solid #dfe7e2;border-radius:16px;padding:16px;color:#26332d}
+.info-box h4{margin:0 0 9px;color:#0f281e;font-size:1.05rem}
+.info-box p{margin:0;line-height:1.95;color:#26332d}
+.info-box ul{margin:8px 0 0;padding-right:22px;line-height:2;color:#26332d}
+.info-box li{margin:3px 0}
+.example-box{background:linear-gradient(135deg,rgba(15,90,70,.22),rgba(212,175,55,.08));border-right:4px solid #d4af37}
+.example{font-family:"Amiri",serif;font-size:1.45rem;color:#173b2c;line-height:2.2}
+.rule-chip{display:inline-block;padding:4px 10px;border-radius:999px;background:rgba(212,175,55,.12);color:#f0d778;margin:3px;font-size:.88rem}
+.tip-box{border-right:4px solid #4db6ac}
+.warning-box{border-right:4px solid #e57373}
+.practice-box{border-right:4px solid #81c784}
+.makhraj-table{width:100%;border-collapse:collapse;margin-top:10px}
+.makhraj-table th,.makhraj-table td{padding:9px;border:1px solid rgba(255,255,255,.12);text-align:right}
+.makhraj-table th{color:#e6c766;background:rgba(212,175,55,.08)}
+.section-intro{font-size:1.02rem;line-height:2;color:#33443b;margin:8px 0 16px}
+
+#certCanvas{width:100%!important;height:auto!important}
+
+.vid-card{background:var(--card-bg);border:1px solid #e6e0cc;border-radius:14px;padding:14px;margin-bottom:12px}
+.vid-top{display:flex;gap:12px;align-items:flex-start}
+.vid-n{min-width:34px;height:34px;border-radius:50%;background:var(--primary-color);color:var(--gold-color);display:grid;place-items:center;font-weight:800}
+.vid-top h3{margin:0 0 4px;font-size:16px;color:var(--primary-color)}
+.vid-top p{margin:0 0 6px;font-size:13px;color:#666;line-height:1.7}
+.vid-badge{font-size:11px;background:#fdf3d0;color:#8a6d0b;padding:2px 9px;border-radius:99px}
+.vid-frame{margin-top:10px;border-radius:10px;overflow:hidden;aspect-ratio:16/9;background:#000;display:none}
+.vid-frame.on{display:block}
+.vid-frame iframe{width:100%;height:100%;border:0}
+.vid-actions{display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.vid-play{background:var(--accent-color);color:#fff;border:0;border-radius:10px;padding:9px 16px;font-family:inherit;font-weight:700;cursor:pointer}
+.vid-actions a{color:var(--accent-color);font-size:13px;font-weight:700;text-decoration:none}
+.vid-cert{background:#d4af37;color:#111;border:0;border-radius:10px;padding:9px 14px;font-family:inherit;font-weight:800;cursor:pointer}
+.vid-manual{background:#fff;color:var(--accent-color);border:1px solid var(--accent-color);border-radius:10px;padding:8px 12px;font-family:inherit;font-weight:700;cursor:pointer}
+.vid-card.done{border-color:#2d6a4f;background:#f2faf5}.vid-done{font-size:12px;color:#1e8e4e;font-weight:700}
+.vid-real{font-size:12px;color:#777;margin-top:6px;display:none}
+#vidCertM{position:fixed;inset:0;background:#000b;z-index:9999;display:none;align-items:center;justify-content:center;padding:14px}
+#vidCertM.show{display:flex}#vidCertM .box{background:#fff;border-radius:18px;width:min(520px,100%);max-height:92vh;overflow:auto;padding:18px;text-align:center}
+#vidCertM input{width:100%;padding:11px;border-radius:12px;border:1px solid #ddd;font:700 16px Cairo;text-align:center}
+#vidCertM canvas{width:100%;height:auto;border-radius:8px;box-shadow:0 4px 16px #0004;margin:10px 0}
+</style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="nav-back"><i class="fas fa-arrow-right"></i> العودة للمصحف</a>
+    <h1>دليل أحكام التجويد الميسر</h1>
+    <p style="margin: 5px 0;">شرح شامل ومبسط لأهم القواعد مع الأمثلة التطبيقية واستخراج الشهادات</p>
+</header>
+
+<div class="container">
+
+    <div class="study-progress" aria-label="تقدم أحكام التجويد">
+        <div class="progress-head">
+            <strong><i class="fas fa-chart-line"></i> تقدمك في دليل التجويد</strong>
+            <span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <div style="margin-top:8px;font-size:12px;opacity:.9" id="progressText">لم تجتز أي اختبار بعد</div>
+    </div>
+
+
+    <!-- فيديوهات شرح التجويد -->
+    <div class="tajweed-section" id="videos">
+        <h2><i class="fab fa-youtube" style="color:#e62117;"></i> دورة التجويد المتكاملة — الشيخ فارس عنتر</h2>
+        <p style="margin:0 0 6px;color:#555;font-size:14px">شاهد الدروس بالترتيب. بعد إنهاء كل فيديو تحصل على شهادة إتمامه. <b id="vidCount"></b></p>
+        <p style="margin:0 0 12px;color:#999;font-size:12px">إن لم يعمل التشغيل داخل التطبيق فاضغط «فتح في يوتيوب» ثم ارجع واضغط «أنهيت المشاهدة».</p>
+        <div class="vid-card" data-key="fa-1" data-title="الدرس 1: شرح حكم الإظهار مع التطبيق العملي والتدريبات" data-k="p" data-id="PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" data-i="0">
+            <div class="vid-top"><span class="vid-n">1</span><div><h3>الدرس 1: شرح حكم الإظهار مع التطبيق العملي والتدريبات</h3><span class="vid-badge">33 دقيقة</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/playlist?list=PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+        <div class="vid-card" data-key="fa-2" data-title="الدرس 2: شرح الإدغام بغنة مع التطبيق العملي والتدريبات" data-k="p" data-id="PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" data-i="1">
+            <div class="vid-top"><span class="vid-n">2</span><div><h3>الدرس 2: شرح الإدغام بغنة مع التطبيق العملي والتدريبات</h3><span class="vid-badge">46 دقيقة</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/playlist?list=PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+        <div class="vid-card" data-key="fa-3" data-title="الدرس 3: شرح الإدغام بغير غنة مع التطبيق العملي والتدريبات" data-k="p" data-id="PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" data-i="2">
+            <div class="vid-top"><span class="vid-n">3</span><div><h3>الدرس 3: شرح الإدغام بغير غنة مع التطبيق العملي والتدريبات</h3><span class="vid-badge">39 دقيقة</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/playlist?list=PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+        <div class="vid-card" data-key="fa-4" data-title="الدرس 4: شرح حكم الإقلاب مع التطبيق العملي والتدريبات" data-k="p" data-id="PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" data-i="3">
+            <div class="vid-top"><span class="vid-n">4</span><div><h3>الدرس 4: شرح حكم الإقلاب مع التطبيق العملي والتدريبات</h3><span class="vid-badge">33 دقيقة</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/playlist?list=PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+        <div class="vid-card" data-key="fa-5" data-title="الدرس 5: الإخفاء الحقيقي مع القاف والحروف المفخمة وطريقة إخراج الغنة المفخمة" data-k="p" data-id="PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" data-i="4">
+            <div class="vid-top"><span class="vid-n">5</span><div><h3>الدرس 5: الإخفاء الحقيقي مع القاف والحروف المفخمة وطريقة إخراج الغنة المفخمة</h3><span class="vid-badge">38 دقيقة</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/playlist?list=PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+        <div class="vid-card" data-key="fa-6" data-title="الدرس 6: الإخفاء الحقيقي مع حرف الكاف والحروف المرققة وطريقة إخراج غنة الإخفاء" data-k="p" data-id="PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" data-i="5">
+            <div class="vid-top"><span class="vid-n">6</span><div><h3>الدرس 6: الإخفاء الحقيقي مع حرف الكاف والحروف المرققة وطريقة إخراج غنة الإخفاء</h3><span class="vid-badge">46 دقيقة</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/playlist?list=PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+        <div class="vid-card" data-key="fa-7" data-title="الدرس 7: أحكام الميم والنون المشددتين واللحن الجلي فيهما — شرح تحفة الأطفال" data-k="p" data-id="PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" data-i="6">
+            <div class="vid-top"><span class="vid-n">7</span><div><h3>الدرس 7: أحكام الميم والنون المشددتين واللحن الجلي فيهما — شرح تحفة الأطفال</h3><span class="vid-badge">25 دقيقة</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/playlist?list=PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+        <div class="vid-card" data-key="fa-8" data-title="الدرس 8: شرح الإخفاء الشفوي كما يفعله إمام القراء الحصري وشرح أحكام الميم الساكنة" data-k="p" data-id="PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" data-i="7">
+            <div class="vid-top"><span class="vid-n">8</span><div><h3>الدرس 8: شرح الإخفاء الشفوي كما يفعله إمام القراء الحصري وشرح أحكام الميم الساكنة</h3><span class="vid-badge">39 دقيقة</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/playlist?list=PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+        <div class="vid-card" data-key="fa-9" data-title="الدرس 9: شرح مراتب الغنن (الدرس التاسع)" data-k="p" data-id="PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" data-i="8">
+            <div class="vid-top"><span class="vid-n">9</span><div><h3>الدرس 9: شرح مراتب الغنن (الدرس التاسع)</h3><span class="vid-badge">28 دقيقة</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/playlist?list=PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+        <div class="vid-card" data-key="fa-10" data-title="الدرس 10: زمن الغنة الصحيح للميم والنون والفرق بين مراتب الغنن وأزمنة الغنن" data-k="p" data-id="PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" data-i="9">
+            <div class="vid-top"><span class="vid-n">10</span><div><h3>الدرس 10: زمن الغنة الصحيح للميم والنون والفرق بين مراتب الغنن وأزمنة الغنن</h3><span class="vid-badge">24 دقيقة</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/playlist?list=PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+        <div class="vid-card" data-key="fa-11" data-title="الدرس 11: اللامات السواكن وأحوال لام التعريف: اللام القمرية (الدرس 11)" data-k="p" data-id="PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" data-i="10">
+            <div class="vid-top"><span class="vid-n">11</span><div><h3>الدرس 11: اللامات السواكن وأحوال لام التعريف: اللام القمرية (الدرس 11)</h3><span class="vid-badge">فيديو</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/playlist?list=PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+        <div class="vid-card" data-key="fa-12" data-title="الدرس 12: اللام الشمسية مع شرح تحفة الأطفال (الدرس 12)" data-k="p" data-id="PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" data-i="11">
+            <div class="vid-top"><span class="vid-n">12</span><div><h3>الدرس 12: اللام الشمسية مع شرح تحفة الأطفال (الدرس 12)</h3><span class="vid-badge">فيديو</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/playlist?list=PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+        <div class="vid-card" data-key="fa-more" data-title="متابعة باقي دروس الدورة (من الدرس 13)" data-k="p" data-id="PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" data-i="12">
+            <div class="vid-top"><span class="vid-n">more</span><div><h3>متابعة باقي دروس الدورة (من الدرس 13)</h3><span class="vid-badge">قائمة التشغيل</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/playlist?list=PLcgZz-bFmPJHgVT6U5UQ5vv99_HbQWktq" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+        <div class="vid-card" data-key="all" data-title="مراجعة شاملة: جميع قواعد التجويد من الألف إلى الياء" data-k="v" data-id="Q-vJEf58Zq4" data-i="0">
+            <div class="vid-top"><span class="vid-n">★</span><div><h3>مراجعة شاملة: جميع قواعد التجويد من الألف إلى الياء</h3><span class="vid-badge">فيديو شامل</span> <span class="vid-done" style="display:none">✅ أُنجز</span></div></div>
+            <div class="vid-frame"></div>
+            <div class="vid-actions"><button class="vid-play" onclick="playVid(this)">▶ شغّل هنا</button>
+              <button class="vid-cert" style="display:none" onclick="openVidCert(this)">🏅 شهادة الدرس</button>
+              <button class="vid-manual" style="display:none" onclick="finishVid(this.closest('.vid-card'))">✔ أنهيت المشاهدة</button>
+              <a href="https://www.youtube.com/watch?v=Q-vJEf58Zq4" target="_blank" rel="noopener">فتح في يوتيوب ↗</a></div>
+        </div>
+    </div>
+
+    <!-- 1. أحكام النون الساكنة والتنوين -->
+    <div class="tajweed-section">
+        <h2><i class="fas fa-book-open" style="color: var(--gold-color);"></i> 1. أحكام النون الساكنة والتنوين</h2>
+        
+        <div class="rule-card">
+            <h3>الإظهار الحلقي</h3>
+            <p>إخراج النون الساكنة أو التنوين من مخرجها من غير غنة ظاهرية إذا جاء بعدها أحد حروف الحلق الستة: <b>(ء، هـ، ع، ح، غ، خ)</b>.</p>
+            <div class="example-box">مثال: ﴿مَنْ آمَنَ﴾ - ﴿مِنْ هَادٍ﴾ - ﴿عَلِيمٌ حَكِيمٌ﴾</div>
+<div class="lesson-details">
+<div class="info-box">
+<h4>ما معنى الإظهار الحلقي؟</h4>
+<p>هو إخراج النون الساكنة أو التنوين واضحين من غير إدغام ولا إخفاء عندما يأتي بعدهما حرف من حروف الحلق الستة.</p>
+</div>
+<div class="info-box">
+<h4>حروفه</h4>
+<p><span class="rule-chip">ء</span><span class="rule-chip">ه</span><span class="rule-chip">ع</span><span class="rule-chip">ح</span><span class="rule-chip">غ</span><span class="rule-chip">خ</span></p>
+<p>يمكن تذكرها من مخارجها: أقصى الحلق، وسط الحلق، أدنى الحلق.</p>
+</div>
+<div class="info-box example-box">
+<h4>أمثلة</h4>
+<p class="example">مَنْ آمَنَ &nbsp; • &nbsp; مَنْ هَادَ &nbsp; • &nbsp; أَنْعَام &nbsp; • &nbsp; عَلِيمٌ حَكِيم</p>
+</div>
+<div class="info-box tip-box"><h4>🎯 كيف تطبّقه؟</h4><p>انطق النون أو التنوين بوضوح، ثم انتقل مباشرة إلى حرف الحلق، من غير إدخال النون في الحرف الذي بعدها.</p></div>
+<div class="info-box warning-box"><h4>⚠️ خطأ شائع</h4><p>أن تتحول النون إلى صوت مخفي أو مدغم بسبب سرعة القراءة. الوضوح هو الأساس هنا.</p></div>
+</div>
+
+        </div>
+
+        <div class="rule-card">
+            <h3>الإدغام</h3>
+            <p>دمج النون الساكنة أو التنوين بالحرف التالي بحيث يصيران حرفاً واحداً مشدداً. حروفه مجموعة في كلمة <b>(يرملون)</b>.</p>
+            <ul>
+                <li><b>إدغام بغنة:</b> في حروف (ينمو). <div class="example-box">مثال: ﴿مَن يَقُولُ﴾</div>
+<div class="lesson-details">
+<div class="info-box"><h4>ما هو الإدغام؟</h4><p>هو إدخال النون الساكنة أو التنوين في الحرف الذي بعدهما حتى يصيرا في النطق كحرف واحد مشدد في مواضع الإدغام.</p></div>
+<div class="info-box"><h4>حروف الإدغام</h4><p>حروفه ستة: <span class="rule-chip">ي</span><span class="rule-chip">ر</span><span class="rule-chip">م</span><span class="rule-chip">ل</span><span class="rule-chip">و</span><span class="rule-chip">ن</span> وتجمع في كلمة <strong>يرملون</strong>.</p></div>
+<div class="info-box">
+<h4>الإدغام بغنة</h4><p>يكون مع أربعة أحرف: <strong>ي، ن، م، و</strong>، وتظهر الغنة بمقدار حركتين.</p>
+</div>
+<div class="info-box">
+<h4>الإدغام بغير غنة</h4><p>يكون مع حرفي <strong>ل، ر</strong>، فلا تُظهر غنة الإدغام عند الانتقال إليهما.</p>
+</div>
+<div class="info-box example-box"><h4>أمثلة</h4><p class="example">مَنْ يَعْمَلْ &nbsp; • &nbsp; مِنْ مَالٍ &nbsp; • &nbsp; غَفُورٌ رَحِيمٌ &nbsp; • &nbsp; هُدًى لِلْمُتَّقِينَ</p></div>
+<div class="info-box warning-box"><h4>⚠️ انتبه</h4><p>ليس كل اجتماع للنون الساكنة مع أحد حروف «يرملون» يُعامل آليًا بنفس الطريقة في كل موضع؛ فتعلم الحكم من المثال واضبط الأداء بالسماع والتلقي.</p></div>
+</div>
+</li>
+                <li><b>إدغام بغير غنة:</b> في حرفي (ل، ر). <div class="example-box">مثال: ﴿مِن رَّبِّهِمْ﴾</div></li>
+            </ul>
+        </div>
+
+        <div class="rule-card">
+            <h3>الإقلاب</h3>
+            <p>قلب النون الساكنة أو التنوين ميماً مخفاة بغنة عند التقائها بحرف <b>(الباء)</b>.</p>
+            <div class="example-box">مثال: ﴿مِن بَعْدِ﴾ - ﴿سَمِيعٌ بَصِيرٌ﴾</div>
+<div class="lesson-details">
+<div class="info-box"><h4>ما هو الإقلاب؟</h4><p>هو قلب النون الساكنة أو التنوين <strong>ميمًا مخفاة</strong> عند مجيء حرف الباء بعدهما، مع بقاء الغنة.</p></div>
+<div class="info-box"><h4>حرف الإقلاب</h4><p>له حرف واحد فقط: <span class="rule-chip">ب</span>.</p></div>
+<div class="info-box example-box"><h4>مثال</h4><p class="example">أَنْبِئْهُمْ &nbsp; • &nbsp; سَمِيعٌ بَصِيرٌ</p><p>عند النطق تنتقل من النون/التنوين إلى ميم مخفاة مع الغنة ثم إلى الباء.</p></div>
+<div class="info-box tip-box"><h4>🎯 علامة تساعدك</h4><p>في المصحف قد تجد علامة الميم الصغيرة فوق النون أو التنوين للدلالة على الإقلاب.</p></div>
+</div>
+
+        </div>
+
+        <div class="rule-card">
+            <h3>الإخفاء الحقيقي</h3>
+            <p>النطق بالنون الساكنة أو التنوين بحالة بين الإظهار والإدغام مع بقاء الغنة عند حروف الإخفاء الـ 15 المتبقية.</p>
+            <div class="example-box">مثال: ﴿مِن قَبْلُ﴾ - ﴿أَنفُسَكُمْ﴾</div>
+<div class="lesson-details">
+<div class="info-box"><h4>ما هو الإخفاء الحقيقي؟</h4><p>هو النطق بالنون الساكنة أو التنوين بحالة بين الإظهار والإدغام، من غير تشديد، مع بقاء الغنة.</p></div>
+<div class="info-box"><h4>حروفه</h4><p>حروف الإخفاء خمسة عشر حرفًا: <strong>ص ذ ث ك ج ش ق س د ط ز ف ت ض ظ</strong>.</p></div>
+<div class="info-box example-box"><h4>أمثلة</h4><p class="example">مِنْ شَرِّ &nbsp; • &nbsp; أَنْصَارًا &nbsp; • &nbsp; رِيحًا صَرْصَرًا &nbsp; • &nbsp; قَوْمًا ظَالِمِينَ</p></div>
+<div class="info-box tip-box"><h4>🎯 طريقة الأداء</h4><p>لا تُظهر النون كاملة ولا تدغمها في الحرف التالي، بل أخفِ ذاتها مع غنة مقدارها حركتان، ثم انتقل للحرف التالي.</p></div>
+</div>
+
+        </div>
+
+        
+<div class="info-box example-box" style="margin:18px 0">
+  <h4>📖 قبل أن تبدأ: ما هو علم التجويد؟</h4>
+  <p>
+    التجويد هو إعطاء كل حرف حقَّه ومستحقَّه عند تلاوة القرآن الكريم؛ فيُؤدَّى الحرف من مخرجه الصحيح،
+    وتُراعى صفاته وأحكامه من إظهار وإدغام وإخفاء وإقلاب ومدّ وقلقلة وغيرها. والهدف من هذا الدليل
+    أن تتعلم الحكم <strong>بفهمٍ وتطبيق</strong>، وليس بحفظ اسم الحكم فقط.
+  </p>
+  <div style="margin-top:10px">
+    <span class="rule-chip">المخرج</span>
+    <span class="rule-chip">الصفة</span>
+    <span class="rule-chip">الحكم</span>
+    <span class="rule-chip">التطبيق</span>
+  </div>
+</div>
+
+<div class="section-status" id="status-nun"><i class="fas fa-lock"></i> الشهادة مقفولة — اجتز الاختبار أولاً</div>
+        <button class="cert-btn" onclick="openQuiz('nun')">
+            <i class="fas fa-clipboard-check"></i> اختبار أحكام النون الساكنة والتنوين
+        </button>
+        <div class="quiz-box" id="quiz-nun"></div>
+    </div>
+
+    <!-- 2. أحكام الميم الساكنة -->
+    <div class="tajweed-section">
+        <h2><i class="fas fa-layer-group" style="color: var(--gold-color);"></i> 2. أحكام الميم الساكنة</h2>
+        
+        <div class="rule-card">
+            <h3>الإخفاء الشفوي</h3>
+            <p>تخفى الميم الساكنة مع الغنة إذا وقع بعدها حرف <b>(الباء)</b>.</p>
+            <div class="example-box">مثال: ﴿تَرْمِيهِم بِحِجَارَةٍ﴾</div>
+<div class="lesson-details">
+<div class="info-box"><h4>ما هو الإخفاء الشفوي؟</h4><p>هو إخفاء الميم الساكنة عند حرف الباء، مع الغنة، ويُسمى شفويًا لأن الميم والباء يخرجان من الشفتين.</p></div>
+<div class="info-box"><h4>حرفه</h4><p>حرف واحد فقط: <span class="rule-chip">ب</span>.</p></div>
+<div class="info-box example-box"><h4>مثال</h4><p class="example">تَرْمِيهِمْ بِحِجَارَةٍ</p></div>
+<div class="info-box tip-box"><h4>🎯 الأداء</h4><p>قرّب الشفتين من غير إطباق كامل مع إظهار الغنة، ثم انطق الباء.</p></div>
+</div>
+
+        </div>
+
+        <div class="rule-card">
+            <h3>إدغام المثلين الصغير</h3>
+            <p>تدغم الميم الساكنة في ميم متحركة بعدها لتصيرا ميماً واحدة مشددة بغنة.</p>
+            <div class="example-box">مثال: ﴿لَهُم مَّا يَشَاءُونَ﴾</div>
+<div class="lesson-details">
+<div class="info-box"><h4>ما هو إدغام المثلين الصغير؟</h4><p>هو إدغام حرف ساكن في حرف متحرك مماثل له، فيصيران حرفًا واحدًا مشددًا من جنس الحرف الأول.</p></div>
+<div class="info-box example-box"><h4>مثال</h4><p class="example">قُلْ لَهُمْ &nbsp; • &nbsp; اضْرِبْ بِعَصَاكَ</p><p>في الأداء يُراعى إدخال الحرف الساكن في المماثل المتحرك دون فصل يفسد الإدغام.</p></div>
+<div class="info-box tip-box"><h4>🎯 تذكّر</h4><p>«المثلان» يعنيان أن الحرفين من جنس واحد، و«الصغير» لأن الأول ساكن والثاني متحرك.</p></div>
+</div>
+
+        </div>
+
+        <div class="rule-card">
+            <h3>الإظهار الشفوي</h3>
+            <p>تظهر الميم الساكنة عند باقي الحروف الهجائية (وأشدها ظهوراً عند الفاء والواو).</p>
+            <div class="example-box">مثال: ﴿أَنْعَمْتَ عَلَيْهِمْ﴾</div>
+<div class="lesson-details">
+<div class="info-box"><h4>ما هو الإظهار الشفوي؟</h4><p>هو إظهار الميم الساكنة بوضوح عند جميع الحروف الهجائية ما عدا الباء والميم، مع الانتباه إلى عدم إخفائها أو إدغامها.</p></div>
+<div class="info-box"><h4>حروفه</h4><p>يكون مع بقية الحروف بعد استثناء <strong>الباء والميم</strong>.</p></div>
+<div class="info-box example-box"><h4>أمثلة</h4><p class="example">أَنْعَمْتَ &nbsp; • &nbsp; هُمْ فِيهَا &nbsp; • &nbsp; عَلَيْهِمْ غَيْرِ</p></div>
+<div class="info-box warning-box"><h4>⚠️ انتبه</h4><p>يشتد الاحتياط عند بعض الحروف القريبة من مخرج الميم حتى لا تتحول الميم إلى إخفاء شفوي بغير موضعه.</p></div>
+</div>
+
+        </div>
+
+        <div class="section-status" id="status-mim"><i class="fas fa-lock"></i> الشهادة مقفولة — اجتز الاختبار أولاً</div>
+        <button class="cert-btn" onclick="openQuiz('mim')">
+            <i class="fas fa-clipboard-check"></i> اختبار أحكام الميم الساكنة
+        </button>
+        <div class="quiz-box" id="quiz-mim"></div>
+    </div>
+
+    <!-- 3. أحكام المدود والقلقلة -->
+    <div class="tajweed-section">
+        <h2><i class="fas fa-wave-square" style="color: var(--gold-color);"></i> 3. أحكام المدود والقلقلة</h2>
+        
+        <div class="rule-card">
+            <h3>أنواع المدود الرئيسية</h3>
+            <ul>
+                <li><b>المد الطبيعي:</b> يمد بمقدار حركتين (مثل: ﴿قَالَ﴾، ﴿يَقُولُ﴾).</li>
+                <li><b>المد المتصل:</b> أن يأتي الهمز بعد حرف المد في كلمة واحدة، ويمد 4 أو 5 حركات (مثل: ﴿جَاءَ﴾).</li>
+                <li><b>المد المنفصل:</b> أن يكون حرف المد في كلمة والهمز في الكلمة التالية، ويمد 4 أو 5 حركات (مثل: ﴿إِنَّا أَعْطَيْنَاكَ﴾).</li>
+            </ul>
+        </div>
+<div class="lesson-details">
+<div class="info-box"><h4>ما هو المد الطبيعي؟</h4><p>هو المد الذي لا تقوم ذات حرف المد إلا به، ولا يتوقف على همز أو سكون. ومقداره <strong>حركتان</strong>.</p></div>
+<div class="info-box"><h4>حروف المد</h4><p><span class="rule-chip">ا</span> ألف ساكنة قبلها فتح، <span class="rule-chip">و</span> واو ساكنة قبلها ضم، <span class="rule-chip">ي</span> ياء ساكنة قبلها كسر.</p></div>
+<div class="info-box example-box"><h4>أمثلة</h4><p class="example">قَالَ &nbsp; • &nbsp; يَقُولُ &nbsp; • &nbsp; قِيلَ</p></div>
+<div class="info-box tip-box"><h4>🎯 التدريب</h4><p>اقرأ حرف المد بمقدار حركتين منتظمتين، ولا تمده أكثر لمجرد تحسين الصوت.</p></div>
+</div>
+
+
+        <div class="rule-card">
+            <h3>أحكام القلقلة</h3>
+            <p>اضطراب الصوت عند النطق بحرف ساكن من حروف القلقلة المجمعة في كلمة <b>(قُطْبُ جَدٍّ)</b>.</p>
+            <ul>
+                <li><b>قلقلة صغرى:</b> إذا كان الحرف الساكن في وسط الكلمة (مثل: ﴿يَقْطَعُونَ﴾).</li>
+                <li><b>قلقلة كبرى:</b> إذا وقف على الحرف في آخر الكلمة (مثل: ﴿الْفَلَقِ﴾).</li>
+            </ul>
+        </div>
+
+        <div class="section-status" id="status-madd"><i class="fas fa-lock"></i> الشهادة مقفولة — اجتز الاختبار أولاً</div>
+        <button class="cert-btn" onclick="openQuiz('madd')">
+            <i class="fas fa-clipboard-check"></i> اختبار أحكام المدود والقلقلة
+        </button>
+        <div class="quiz-box" id="quiz-madd"></div>
+    </div>
+
+
+    <!-- 4. مخارج الحروف -->
+    <div class="tajweed-section">
+      <h2><i class="fas fa-volume-up" style="color:var(--gold-color)"></i> 4. مخارج الحروف</h2>
+      <p class="section-intro">مخرج الحرف هو الموضع الذي يخرج منه الحرف ويمتاز به عن غيره. ومعرفة المخارج أساس ضبط النطق في التلاوة.</p>
+      <div class="rule-card">
+        <h3>المخارج العامة الخمسة</h3>
+        <ul>
+          <li><b>الجوف:</b> حروف المد الثلاثة: الألف الساكنة المفتوح ما قبلها، والواو الساكنة المضموم ما قبلها، والياء الساكنة المكسور ما قبلها.</li>
+          <li><b>الحلق:</b> أقصاه للهمزة والهاء، ووسطه للعين والحاء، وأدناه للغين والخاء.</li>
+          <li><b>اللسان:</b> يخرج منه أكثر الحروف، ومنه القاف والكاف والجيم والشين والياء غير المدية والضاد واللام والنون والراء وغيرها.</li>
+          <li><b>الشفتان:</b> منهما الفاء، والباء والميم والواو غير المدية.</li>
+          <li><b>الخيشوم:</b> مخرج الغنة.</li>
+        </ul>
+        <div class="info-box example-box"><h4>تدريب</h4><p class="example">قُلْ • لَمْ • نَ • رَ • خَ • عَ • هَ • ءَ</p></div>
+      </div>
+    </div>
+
+    <!-- 5. صفات الحروف -->
+    <div class="tajweed-section">
+      <h2><i class="fas fa-fingerprint" style="color:var(--gold-color)"></i> 5. صفات الحروف</h2>
+      <p class="section-intro">صفات الحروف تساعد على أداء كل حرف بطبيعته الصحيحة، ومن أهمها الصفات التي لها ضد والصفات التي لا ضد لها.</p>
+      <div class="rule-card">
+        <h3>أهم الصفات المتضادة</h3>
+        <ul>
+          <li><b>الهمس والجهر:</b> الهمس جريان النفس عند النطق بالحرف، والجهر انحباس جريان النفس.</li>
+          <li><b>الشدة والتوسط والرخاوة:</b> تتعلق بجريان الصوت وانحباسه.</li>
+          <li><b>الاستعلاء والاستفال:</b> حروف الاستعلاء مجموعة في <b>خص ضغط قظ</b>، وما عداها مستفل.</li>
+          <li><b>الإطباق والانفتاح:</b> حروف الإطباق: <b>ص، ض، ط، ظ</b>.</li>
+          <li><b>الإذلاق والإصمات:</b> من الصفات التي تُدرس لمعرفة خصائص الحروف.</li>
+        </ul>
+      </div>
+      <div class="rule-card">
+        <h3>صفات لا ضد لها</h3>
+        <p>منها: الصفير في <b>ص، ز، س</b>، والقلقلة في <b>ق، ط، ب، ج، د</b>، واللين في الواو والياء الساكنتين المفتوح ما قبلهما، والانحراف في اللام والراء، والتكرير في الراء، والتفشي في الشين، والاستطالة في الضاد.</p>
+        <div class="info-box warning-box"><h4>⚠️ تنبيه</h4><p>لا تُبالغ في التكرير عند الراء، ولا تجعل القلقلة حركةً زائدة، بل أعطِ الحرف صفته من غير تكلف.</p></div>
+      </div>
+    </div>
+
+    <!-- 6. الغنة -->
+    <div class="tajweed-section">
+      <h2><i class="fas fa-microphone" style="color:var(--gold-color)"></i> 6. الغنة</h2>
+      <p class="section-intro">الغنة صوت أغنّ يخرج من الخيشوم، وتظهر في النون والميم، ويختلف مقدارها بحسب الحكم.</p>
+      <div class="rule-card">
+        <h3>الغنة المشددة</h3>
+        <p>إذا شُددت النون أو الميم وجبت الغنة بمقدار حركتين.</p>
+        <div class="example-box">﴿إِنَّ﴾ • ﴿ثُمَّ﴾ • ﴿إِنَّا﴾</div>
+      </div>
+      <div class="rule-card">
+        <h3>الغنة في الإخفاء والإدغام بغنة والإقلاب والإخفاء الشفوي</h3>
+        <p>تُؤدى الغنة في هذه الأحكام مع مراعاة مقدارها وأداء الحرف التالي بوضوح.</p>
+        <div class="info-box tip-box"><h4>🎯 قاعدة عملية</h4><p>استمع إلى قارئ متقن وطبّق الحكم على أمثلة قصيرة، لأن ضبط الغنة يعتمد على الأداء والسماع إلى جانب المعرفة النظرية.</p></div>
+      </div>
+    </div>
+
+    <!-- 7. التفخيم والترقيق -->
+    <div class="tajweed-section">
+      <h2><i class="fas fa-arrows-alt-v" style="color:var(--gold-color)"></i> 7. التفخيم والترقيق</h2>
+      <p class="section-intro">التفخيم هو تسمين صوت الحرف وامتلاء الفم بصداه، والترقيق هو نحول الصوت وعدم امتلاء الفم بصداه.</p>
+      <div class="rule-card">
+        <h3>حروف الاستعلاء</h3>
+        <p>حروفها: <b>خ، ص، ض، غ، ط، ق، ظ</b>، وتُفخم في الأصل، وتختلف درجات التفخيم بحسب الحركة والموضع.</p>
+        <div class="example-box">خَ • صَ • ضَ • غَ • طَ • قَ • ظَ</div>
+      </div>
+      <div class="rule-card">
+        <h3>تفخيم وترقيق الراء</h3>
+        <ul>
+          <li>تُفخم الراء في مواضع منها الراء المفتوحة أو المضمومة.</li>
+          <li>تُرقق الراء في مواضع منها الراء المكسورة.</li>
+          <li>للراء الساكنة أحوال تفصيلية بحسب ما قبلها وما بعدها والوقف والابتداء.</li>
+        </ul>
+        <div class="info-box warning-box"><h4>⚠️ مهم</h4><p>أحكام الراء من الأبواب التي تحتاج تطبيقًا مع شيخ أو قارئ متقن، ولا يكفي حفظ القاعدة وحده.</p></div>
+      </div>
+      <div class="rule-card">
+        <h3>لام لفظ الجلالة</h3>
+        <p>تفخم لام لفظ الجلالة إذا سبقها فتح أو ضم، وترقق إذا سبقها كسر.</p>
+        <div class="example-box">﴿قَالَ اللَّهُ﴾ • ﴿عَبْدُ اللَّهِ﴾ • ﴿بِسْمِ اللَّهِ﴾</div>
+      </div>
+    </div>
+
+    <!-- 8. أحكام المدود بالتفصيل -->
+    <div class="tajweed-section">
+      <h2><i class="fas fa-arrows-left-right" style="color:var(--gold-color)"></i> 8. أحكام المدود بالتفصيل</h2>
+      <p class="section-intro">المد زيادة في زمن الصوت بحرف من حروف المد أو اللين. وتتنوع أحكامه بحسب وجود الهمز أو السكون.</p>
+      <div class="rule-card">
+        <h3>المد الطبيعي</h3>
+        <p>مقداره حركتان، ولا يتوقف على همز أو سكون.</p>
+        <div class="example-box">قَالَ • يَقُولُ • قِيلَ</div>
+      </div>
+      <div class="rule-card">
+        <h3>مدود بسبب الهمز</h3>
+        <ul>
+          <li><b>المد المتصل:</b> يأتي الهمز بعد حرف المد في الكلمة نفسها.</li>
+          <li><b>المد المنفصل:</b> يأتي حرف المد في كلمة والهمز في الكلمة التالية.</li>
+          <li><b>مد البدل:</b> يتقدم الهمز على حرف المد في مواضع البدل.</li>
+        </ul>
+        <div class="example-box">جَاءَ • إِنَّا أَعْطَيْنَاكَ • آمَنَ</div>
+      </div>
+      <div class="rule-card">
+        <h3>مدود بسبب السكون</h3>
+        <ul>
+          <li><b>المد اللازم:</b> يأتي بعد حرف المد سكون أصلي، وله مقدار معروف في رواية حفص.</li>
+          <li><b>المد العارض للسكون:</b> يكون السكون بسبب الوقف.</li>
+          <li><b>مد اللين:</b> في الواو والياء الساكنتين المفتوح ما قبلهما عند الوقف في مواضعه.</li>
+        </ul>
+        <div class="info-box tip-box"><h4>🎯 ملاحظة</h4><p>مقادير المدود التفصيلية قد تختلف بحسب الرواية وطريق الأداء؛ هذا الدليل موجه أساسًا لرواية حفص عن عاصم، مع ضرورة التلقي من قارئ متقن.</p></div>
+      </div>
+    </div>
+
+    <!-- 9. أحكام اللام -->
+    <div class="tajweed-section">
+      <h2><i class="fas fa-language" style="color:var(--gold-color)"></i> 9. أحكام اللام</h2>
+      <div class="rule-card">
+        <h3>لام التعريف: القمرية والشمسية</h3>
+        <p><b>اللام القمرية:</b> تظهر عند حروفها وتُقرأ واضحة، مثل: <b>الْقَمَر</b>.</p>
+        <p><b>اللام الشمسية:</b> تدغم في الحرف الذي بعدها، مثل: <b>الشَّمْس</b>.</p>
+        <div class="example-box">الْقَمَر • الْكِتَاب • الشَّمْس • النَّاس</div>
+      </div>
+      <div class="rule-card">
+        <h3>لام لفظ الجلالة</h3>
+        <p>تُفخم بعد الفتح والضم، وتُرقق بعد الكسر، كما سبق تفصيله.</p>
+      </div>
+    </div>
+
+    <!-- 10. الهمز -->
+    <div class="tajweed-section">
+      <h2><i class="fas fa-pen-nib" style="color:var(--gold-color)"></i> 10. أحكام الهمز</h2>
+      <div class="rule-card">
+        <h3>همزة القطع وهمزة الوصل</h3>
+        <p><b>همزة القطع</b> تثبت في الابتداء والوصل، أما <b>همزة الوصل</b> فتثبت في الابتداء وتسقط في الوصل.</p>
+        <div class="example-box">أَنْعَمْتَ • ٱهْدِنَا • ٱسْتَغْفِرْ</div>
+      </div>
+      <div class="rule-card">
+        <h3>الابتداء بهمزة الوصل</h3>
+        <p>يُراعى في الابتداء بها ما يخص الكلمة من حركة الهمزة، ويُتعلم ذلك بالتطبيق والسماع.</p>
+        <div class="info-box tip-box"><h4>🎯 نصيحة</h4><p>لا تعتمد على شكل الهمزة وحده؛ تدرب على أمثلة القرآن مع الاستماع لقارئ متقن.</p></div>
+      </div>
+    </div>
+
+    <!-- 11. الوقف والابتداء -->
+    <div class="tajweed-section">
+      <h2><i class="fas fa-pause" style="color:var(--gold-color)"></i> 11. الوقف والابتداء</h2>
+      <p class="section-intro">حسن الوقف والابتداء يحفظ المعنى ويمنع وصل الكلام في موضع يفسد المعنى.</p>
+      <div class="rule-card">
+        <h3>أهم أنواع الوقف</h3>
+        <ul>
+          <li><b>الوقف التام:</b> يتم فيه المعنى ولا يتعلق بما بعده لفظًا ولا معنى.</li>
+          <li><b>الوقف الكافي:</b> يتم المعنى ويتعلق بما بعده معنى لا لفظًا.</li>
+          <li><b>الوقف الحسن:</b> يتم أصل المعنى لكن يوجد تعلق بما بعده.</li>
+          <li><b>الوقف القبيح:</b> لا يصح تعمده إذا أفسد المعنى، إلا لضرورة كضيق النفس.</li>
+        </ul>
+      </div>
+      <div class="rule-card">
+        <h3>علامات الوقف في المصحف</h3>
+        <p>قد ترى علامات إرشادية مثل: <b>م</b> للوقف اللازم في مواضعه، و<b>لا</b> للنهي عن الوقف في الموضع، و<b>ج</b> لجواز الوقف والوصل، وعلامات أخرى بحسب المصحف.</p>
+        <div class="info-box warning-box"><h4>⚠️ تنبيه</h4><p>علامات الوقف تختلف في بعض المصاحف وطرق الضبط، فالأصل الرجوع إلى علامات المصحف الذي تقرأ منه.</p></div>
+      </div>
+    </div>
+
+    <!-- 12. أحكام متفرقة وتطبيق عملي -->
+    <div class="tajweed-section">
+      <h2><i class="fas fa-graduation-cap" style="color:var(--gold-color)"></i> 12. مراجعة شاملة وتطبيق</h2>
+      <div class="rule-card">
+        <h3>كيف تراجع التجويد؟</h3>
+        <ol style="line-height:2.1;padding-right:25px">
+          <li>ابدأ بمخارج الحروف وصفاتها.</li>
+          <li>أتقن أحكام النون الساكنة والتنوين.</li>
+          <li>أتقن أحكام الميم الساكنة والغنة.</li>
+          <li>تدرّب على القلقلة والتفخيم والترقيق.</li>
+          <li>راجع المدود والوقف والابتداء.</li>
+          <li>طبّق الحكم أثناء تلاوة القرآن، لا أثناء حفظ التعريفات فقط.</li>
+          <li>استمع إلى قارئ متقن ثم كرر خلفه، واعرض قراءتك على معلّم عند القدرة.</li>
+        </ol>
+      </div>
+      <div class="info-box example-box">
+        <h4>📌 قاعدة ذهبية</h4>
+        <p class="example">علم التجويد يُتعلَّم بالعلم والتطبيق والتلقي.</p>
+        <p>هذا الدليل يساعدك على فهم الأحكام، أما تصحيح النطق والأداء فيبقى أفضل ما يكون بالمشافهة مع معلّم متقن.</p>
+      </div>
+    </div>
+
+</div>
+
+<!-- نافذة عرض الشهادة Modal -->
+<div class="modal-overlay" id="certModal">
+    <div class="modal-card">
+        <h2 style="color: var(--primary-color); margin-top: 0;"><i class="fas fa-crown" style="color: var(--gold-color);"></i> شهادة إتقان أحكام التجويد</h2>
+        <p style="font-size: 14px; color: #555;">هذه الشهادة لا تُفتح إلا بعد اجتياز الاختبار بنجاح.</p>
+        
+        <div style="display: flex; gap: 10px; max-width: 400px; margin: 0 auto 15px auto;">
+            <input type="text" id="studentNameInput" placeholder="اكتب اسمك الثلاثي هنا..." value="" style="flex: 1; text-align: center; font-weight: bold;">
+            <button class="btn-gold" onclick="generateCertificate()"><i class="fas fa-sync"></i> تحديث</button>
+        </div>
+
+        <canvas id="certCanvas" width="900" height="600"></canvas>
+
+        <div style="display: flex; justify-content: center; gap: 12px; margin-top: 10px;">
+            <button class="btn-gold" onclick="downloadCertificate()"><i class="fas fa-download"></i> تحميل الشهادة PNG</button>
+            <button class="btn-secondary" onclick="closeCertModal()">إغلاق</button>
+        </div>
+    </div>
+</div>
+
+<div id="vidCertM"><div class="box">
+  <h3 style="margin:0 0 8px;color:#0f281e">🏅 مبارك إتمام الدرس</h3>
+  <input type="text" id="vidCertName" placeholder="اكتب اسمك الكامل">
+  <canvas id="vidCertCanvas"></canvas>
+  <button class="vid-cert" onclick="saveVidCert()">⬇ حفظ / مشاركة الشهادة</button>
+  <button class="vid-manual" onclick="document.getElementById('vidCertM').classList.remove('show')">إغلاق</button>
+</div></div>
+<script src="certificate.js"></script>
+<script>
+    let currentRuleName = '';
+    let currentRuleId = '';
+    const PASS_SCORE = 80;
+
+    const quizzes = {
+        nun: {
+            name: 'أحكام النون الساكنة والتنوين',
+            questions: [
+                { q:'كم عدد حروف الإظهار الحلقي؟', a:['أربعة','ستة','ثمانية','خمسة'], c:1 },
+                { q:'ما حروف الإدغام بغنة؟', a:['ل، ر','ينمو','ء، هـ، ع، ح، غ، خ','ق، ط، ب، ج، د'], c:1 },
+                { q:'متى يكون الإقلاب؟', a:['عند الباء','عند الراء فقط','عند الميم فقط','عند جميع الحروف'], c:0 },
+                { q:'ما عدد حروف الإخفاء الحقيقي؟', a:['10','12','15','17'], c:2 },
+                { q:'ما حروف الإدغام بغير غنة؟', a:['ي، ن','م، و','ل، ر','ق، ط'], c:2 }
+            ]
+        },
+        mim: {
+            name: 'أحكام الميم الساكنة',
+            questions: [
+                { q:'متى يكون الإخفاء الشفوي؟', a:['عند الباء','عند الراء','عند الواو','عند النون'], c:0 },
+                { q:'في أي حرف يكون إدغام المثلين الصغير للميم الساكنة؟', a:['الباء','الميم','الفاء','الواو'], c:1 },
+                { q:'الإظهار الشفوي يكون عند:', a:['الباء فقط','الميم فقط','باقي الحروف الهجائية','النون فقط'], c:2 },
+                { q:'الإخفاء الشفوي يصاحبه:', a:['مد لازم','غنة','قلقلة','إظهار حلقي'], c:1 },
+                { q:'مثال الإخفاء الشفوي الوارد في الدرس هو:', a:['مِن رَّبِّهِمْ','تَرْمِيهِم بِحِجَارَةٍ','مَن يَقُولُ','جَاءَ'], c:1 }
+            ]
+        },
+        madd: {
+            name: 'أحكام المدود والقلقلة',
+            questions: [
+                { q:'مقدار المد الطبيعي حسب الدرس:', a:['حركة واحدة','حركتان','4 حركات','6 حركات'], c:1 },
+                { q:'المد المتصل يكون فيه الهمز:', a:['في كلمة تالية','بعد حرف المد في كلمة واحدة','قبل حرف المد دائماً','لا يوجد همز'], c:1 },
+                { q:'حروف القلقلة مجموعة في:', a:['يرملون','ينمو','قطب جد','ء هـ ع ح غ خ'], c:2 },
+                { q:'القلقلة الصغرى تكون عندما يكون حرف القلقلة الساكن:', a:['في وسط الكلمة','في آخر السورة فقط','متحركاً','بعد تنوين'], c:0 },
+                { q:'حسب الدرس، المد المنفصل يمد:', a:['حركتين فقط','4 أو 5 حركات','6 حركات فقط','لا يمد'], c:1 }
+            ]
+        }
+    };
+
+    function getPassed(id) {
+        return localStorage.getItem('tajweed_pass_' + id) === '1';
+    }
+
+    function setPassed(id) {
+        localStorage.setItem('tajweed_pass_' + id, '1');
+    }
+
+    function updateProgress() {
+        const ids = Object.keys(quizzes);
+        const done = ids.filter(getPassed).length;
+        const percent = Math.round((done / ids.length) * 100);
+        document.getElementById('progressPercent').textContent = percent + '%';
+        document.getElementById('progressFill').style.width = percent + '%';
+        document.getElementById('progressText').textContent =
+            done === ids.length ? 'مبارك! اجتزت جميع اختبارات أحكام التجويد.' :
+            `اجتزت ${done} من ${ids.length} اختبارات — أكمل الباقي للحصول على شهاداتك.`;
+
+        ids.forEach(id => {
+            const el = document.getElementById('status-' + id);
+            if (!el) return;
+            if (getPassed(id)) {
+                el.className = 'section-status done';
+                el.innerHTML = '<i class="fas fa-check-circle"></i> تم اجتياز الاختبار — الشهادة متاحة';
+            }
+        });
+    }
+
+    function openQuiz(id) {
+        currentRuleId = id;
+        const box = document.getElementById('quiz-' + id);
+        const quiz = quizzes[id];
+        if (!box || !quiz) return;
+
+        if (getPassed(id)) {
+            box.style.display = 'block';
+            box.innerHTML = `
+                <div style="text-align:center;padding:8px">
+                    <div style="font-size:42px;color:#38a169"><i class="fas fa-check-circle"></i></div>
+                    <h3 style="color:#0f281e;margin:8px 0">تم اجتياز الاختبار</h3>
+                    <p>يمكنك الآن إصدار شهادة <strong>${quiz.name}</strong>.</p>
+                    <button class="btn-gold" onclick="openCertModal('${quiz.name.replace(/'/g, "\'")}')">
+                        <i class="fas fa-award"></i> إصدار الشهادة
+                    </button>
+                </div>`;
+            return;
+        }
+
+        box.style.display = 'block';
+        box.innerHTML = `
+            <h3 style="margin-top:0;color:#0f281e"><i class="fas fa-clipboard-check"></i> اختبار ${quiz.name}</h3>
+            <p style="font-size:13px;color:#555">أجب عن جميع الأسئلة. درجة النجاح ${PASS_SCORE}%.</p>
+            ${quiz.questions.map((item,i)=>`
+                <div class="quiz-question">
+                    <p>${i+1}. ${item.q}</p>
+                    ${item.a.map((opt,j)=>`
+                        <button type="button" class="quiz-option" data-q="${i}" data-a="${j}" onclick="selectOption(this, ${i}, ${j})">
+                            ${String.fromCharCode(65+j)}. ${opt}
+                        </button>`).join('')}
+                </div>`).join('')}
+            <button class="btn-gold" onclick="submitQuiz('${id}')">
+                <i class="fas fa-check"></i> تصحيح الاختبار
+            </button>
+            <div class="quiz-result" id="quiz-result-${id}"></div>`;
+        box.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+
+    function selectOption(btn, qIndex, answerIndex) {
+        document.querySelectorAll(`#quiz-${currentRuleId} .quiz-option[data-q="${qIndex}"]`).forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        btn.dataset.selected = '1';
+        btn.parentElement.dataset.answer = answerIndex;
+    }
+
+    function submitQuiz(id) {
+        const quiz = quizzes[id];
+        let correct = 0;
+        let answered = 0;
+
+        quiz.questions.forEach((q, i) => {
+            const question = document.querySelector(`#quiz-${id} .quiz-question:nth-of-type(${i+2})`);
+            // safer lookup by question index
+            const selected = document.querySelector(`#quiz-${id} .quiz-option[data-q="${i}"].selected`);
+            if (selected) {
+                answered++;
+                if (Number(selected.dataset.a) === q.c) correct++;
+            }
+        });
+
+        const score = Math.round((correct / quiz.questions.length) * 100);
+        const result = document.getElementById('quiz-result-' + id);
+
+        if (answered < quiz.questions.length) {
+            result.innerHTML = `<span style="color:#c53030">أجب عن جميع الأسئلة أولاً. (${answered}/${quiz.questions.length})</span>`;
+            return;
+        }
+
+        if (score >= PASS_SCORE) {
+            setPassed(id);
+            result.innerHTML = `<span style="color:#1b7a3c">ممتاز! حصلت على ${score}% وتم فتح الشهادة.</span>`;
+            updateProgress();
+            setTimeout(() => openQuiz(id), 500);
+        } else {
+            result.innerHTML = `<span style="color:#c53030">لم تجتز الاختبار. درجتك ${score}%. راجع الدرس وأعد المحاولة.</span>`;
+        }
+    }
+
+    function openCertModal(ruleName) {
+        const id = Object.keys(quizzes).find(k => quizzes[k].name === ruleName);
+        if (!id || !getPassed(id)) {
+            alert('لا يمكن إصدار الشهادة قبل اجتياز الاختبار بنجاح.');
+            return;
+        }
+        currentRuleId = id;
+        currentRuleName = ruleName;
+        document.getElementById('studentNameInput').value = document.getElementById('studentNameInput').value || localStorage.getItem('studentName') || '';
+        document.getElementById('certModal').style.display = 'flex';
+        generateCertificate();
+    }
+
+    function closeCertModal() {
+        document.getElementById('certModal').style.display = 'none';
+    }
+
+
+
+/* ===== فيديوهات التجويد: تشغيل + اكتشاف انتهاء الفيديو + شهادة لكل درس ===== */
+const VK='vid_done_';
+let ytLoading=false,ytOK=false;
+window.onYouTubeIframeAPIReady=()=>{ytOK=true};
+function loadYT(){if(window.YT&&YT.Player){ytOK=true;return}if(ytLoading)return;ytLoading=true;
+  const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s)}
+function refreshVidUI(){
+  let n=0,all=document.querySelectorAll('.vid-card');
+  all.forEach(c=>{const d=localStorage.getItem(VK+c.dataset.key);
+    c.classList.toggle('done',!!d);c.querySelector('.vid-done').style.display=d?'inline':'none';c.querySelector('.vid-cert').style.display=d?'inline-block':'none';if(d)n++});
+  const el=document.getElementById('vidCount');if(el)el.textContent='أنجزت '+n+' من '+all.length;
+}
+function stopAllVids(except){
+  document.querySelectorAll('.vid-card').forEach(c=>{if(c===except)return;const f=c.querySelector('.vid-frame');
+    if(c._yt){try{c._yt.destroy()}catch(e){}c._yt=null}f.innerHTML='';f.classList.remove('on');c.querySelector('.vid-play').textContent='▶ شغّل هنا'})
+}
+function playVid(btn){
+  const card=btn.closest('.vid-card'),f=card.querySelector('.vid-frame');
+  if(f.classList.contains('on')){stopAllVids();return}
+  stopAllVids(card);
+  f.innerHTML='<div id="yt_'+card.dataset.key+'"></div>';f.classList.add('on');btn.textContent='⏹ إغلاق';
+  card.dataset.real='';loadYT();
+  let tries=0;const go=()=>{
+    if(ytOK&&window.YT&&YT.Player){
+      const pv={rel:0,playsinline:1,autoplay:1},o={width:'100%',height:'100%',playerVars:pv,events:{
+        onReady:e=>{e.target.playVideo()},
+        onStateChange:e=>{
+          if(e.data===YT.PlayerState.PLAYING){try{const t=e.target.getVideoData().title;if(t)card.dataset.real=t}catch(x){}}
+          if(e.data===YT.PlayerState.ENDED){try{e.target.stopVideo()}catch(x){}finishVid(card)}}}};
+      if(card.dataset.k==='p'){pv.listType='playlist';pv.list=card.dataset.id;pv.index=+card.dataset.i}else o.videoId=card.dataset.id;
+      card._yt=new YT.Player('yt_'+card.dataset.key,o);
+    }else if(++tries<40)setTimeout(go,200);
+    else{ // احتياطي: تشغيل عادي + زر «أنهيت المشاهدة»
+      const src=card.dataset.k==='p'?'https://www.youtube-nocookie.com/embed/videoseries?list='+card.dataset.id+'&index='+card.dataset.i:'https://www.youtube-nocookie.com/embed/'+card.dataset.id;
+      f.innerHTML='<iframe src="'+src+'" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
+      card.querySelector('.vid-manual').style.display='inline-block';
+    }};
+  go();
+}
+function finishVid(card){
+  if(!localStorage.getItem(VK+card.dataset.key))try{localStorage.setItem(VK+card.dataset.key,new Date().toISOString())}catch(e){}
+  refreshVidUI();openVidCert(card.querySelector('.vid-cert'));
+}
+let vidCertCard=null,vidSerial='';
+function openVidCert(b){
+  vidCertCard=b.closest('.vid-card');vidSerial=WMCert.serial();
+  const n=document.getElementById('vidCertName');n.value=n.value||localStorage.getItem('studentName')||'';
+  document.getElementById('vidCertM').classList.add('show');drawVidCert();
+}
+function drawVidCert(){
+  const nm=document.getElementById('vidCertName').value.trim()||'طالب العلم';try{localStorage.setItem('studentName',nm)}catch(e){}
+  const real=vidCertCard.dataset.real,title=vidCertCard.dataset.title;
+  return WMCert.draw({canvas:document.getElementById('vidCertCanvas'),title:'شهادة إتمام درس',name:nm,
+    line1:'أتمّ مشاهدة: '+title,line2:'دورة أحكام التجويد المتكاملة — الشيخ فارس عنتر',quote:'«وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا»',serial:vidSerial});
+}
+document.getElementById('vidCertName').oninput=()=>{clearTimeout(drawVidCert.t);drawVidCert.t=setTimeout(drawVidCert,300)};
+async function saveVidCert(){await drawVidCert();await WMCert.save(document.getElementById('vidCertCanvas'),'شهادة_درس_'+vidCertCard.dataset.key)}
+refreshVidUI();
+
+async function generateCertificate() {
+        const nm = document.getElementById('studentNameInput').value.trim() || 'طالب العلم';
+        try { localStorage.setItem('studentName', nm); } catch(e) {}
+        if (!window._certSerial) window._certSerial = WMCert.serial();
+        await WMCert.draw({
+            canvas: document.getElementById('certCanvas'),
+            title: 'شهادة إتقان أحكام التجويد',
+            name: nm,
+            line1: 'قد اجتاز اختبار ' + currentRuleName + ' بنجاح',
+            line2: 'وفق محتوى دليل أحكام التجويد الميسّر بالمنصة',
+            quote: '«وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا»',
+            serial: window._certSerial
+        });
+    }
+
+    async function downloadCertificate() {
+        if (!currentRuleId || !getPassed(currentRuleId)) {
+            alert('الشهادة غير متاحة قبل اجتياز الاختبار.');
+            return;
+        }
+        await generateCertificate();
+        await WMCert.save(document.getElementById('certCanvas'), 'شهادة_تجويد_' + currentRuleName);
+    }
+
+    document.addEventListener('DOMContentLoaded', updateProgress);
+</script>
+
+</body>
+</html>
