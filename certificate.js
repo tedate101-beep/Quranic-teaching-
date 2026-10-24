@@ -83,6 +83,7 @@
    */
   async function draw(opts) {
     await loadFonts();
+    if (opts.variant === 'champion') return drawChampion(opts);
     const c = opts.canvas;
     c.width = W; c.height = H;
     const ctx = c.getContext('2d');
@@ -155,6 +156,72 @@
     return c;
   }
 
+  function crown(ctx, cx, cy) {
+    const g = ctx.createLinearGradient(cx - 100, cy - 70, cx + 100, cy + 60);
+    g.addColorStop(0, GOLD); g.addColorStop(.5, '#fff3b0'); g.addColorStop(1, GOLD2);
+    ctx.fillStyle = g; ctx.beginPath();
+    ctx.moveTo(cx - 90, cy + 40); ctx.lineTo(cx - 105, cy - 50); ctx.lineTo(cx - 48, cy - 8); ctx.lineTo(cx, cy - 75);
+    ctx.lineTo(cx + 48, cy - 8); ctx.lineTo(cx + 105, cy - 50); ctx.lineTo(cx + 90, cy + 40); ctx.closePath(); ctx.fill();
+    ctx.fillRect(cx - 94, cy + 44, 188, 20);
+    [[cx - 105, cy - 52, '#e74c3c'], [cx, cy - 77, '#3498db'], [cx + 105, cy - 52, '#e74c3c']].forEach(([x, y, col]) => {
+      ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, 11, 0, 7); ctx.fill(); });
+  }
+  function laurel(ctx, cx, cy, dir) {
+    ctx.save(); ctx.fillStyle = GOLD;
+    for (let i = 0; i < 9; i++) {
+      const a = Math.PI * (0.15 + i * 0.085), x = cx + dir * Math.sin(a) * 150, y = cy - Math.cos(a) * 150 + 120;
+      ctx.save(); ctx.translate(x, y); ctx.rotate(dir * (a - 0.2) * -1 + (dir < 0 ? 0.4 : -0.4));
+      ctx.beginPath(); ctx.ellipse(0, 0, 11, 28, 0, 0, 7); ctx.fill(); ctx.restore();
+    }
+    ctx.restore();
+  }
+  async function drawChampion(opts) {
+    const c = opts.canvas; c.width = W; c.height = H;
+    const ctx = c.getContext('2d'); ctx.direction = 'rtl'; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, '#07100b'); bg.addColorStop(.5, '#13261c'); bg.addColorStop(1, '#07100b');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+    const gl = ctx.createRadialGradient(W / 2, H * .45, 40, W / 2, H * .45, H * .85);
+    gl.addColorStop(0, 'rgba(230,199,106,.25)'); gl.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = gl; ctx.fillRect(0, 0, W, H);
+    ctx.save(); ctx.globalAlpha = .07; ctx.strokeStyle = GOLD2; ctx.lineWidth = 2;
+    for (let y = 60; y < H; y += 120) for (let x = 60; x < W; x += 120) { star(ctx, x, y, 48, 8, 0.62); ctx.stroke(); }
+    ctx.restore();
+    const gb = ctx.createLinearGradient(0, 0, W, H);
+    gb.addColorStop(0, GOLD2); gb.addColorStop(.5, '#fff3b0'); gb.addColorStop(1, GOLD);
+    ctx.strokeStyle = gb; ctx.lineWidth = 12; ctx.strokeRect(34, 34, W - 68, H - 68);
+    ctx.lineWidth = 3; ctx.strokeRect(58, 58, W - 116, H - 116); ctx.strokeRect(72, 72, W - 144, H - 144);
+    corner(ctx, 72, 72, 1, 1); corner(ctx, W - 72, 72, -1, 1); corner(ctx, 72, H - 72, 1, -1); corner(ctx, W - 72, H - 72, -1, -1);
+    crown(ctx, W / 2, 190);
+    ctx.fillStyle = gb; fit(ctx, opts.title || 'شهادة التفوّق — المركز الأول', 1250, 96, '700 {s}px "Reem Kufi","Amiri",serif');
+    ctx.fillText(opts.title || 'شهادة التفوّق — المركز الأول', W / 2, 395);
+    divider(ctx, 430);
+    ctx.fillStyle = '#d9d2b8'; ctx.font = '400 38px "Cairo",sans-serif';
+    ctx.fillText('تتشرّف منصة «المصحف المعلّم» بمنح هذه الشهادة إلى البطل', W / 2, 505);
+    const ng = ctx.createLinearGradient(500, 0, 1300, 0);
+    ng.addColorStop(0, GOLD); ng.addColorStop(.5, '#fff3b0'); ng.addColorStop(1, GOLD);
+    ctx.fillStyle = ng; fit(ctx, opts.name, 1250, 128, '700 {s}px "Amiri",serif'); ctx.fillText(opts.name, W / 2, 640);
+    ctx.strokeStyle = GOLD; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(470, 672); ctx.lineTo(1330, 672); ctx.stroke();
+    ctx.fillStyle = '#f2ecd2'; fit(ctx, opts.line1, 1350, 44, '400 {s}px "Cairo",sans-serif'); ctx.fillText(opts.line1, W / 2, 765);
+    ctx.fillStyle = '#b9b296'; fit(ctx, opts.line2 || '', 1350, 36, '400 {s}px "Cairo",sans-serif'); ctx.fillText(opts.line2 || '', W / 2, 828);
+    ctx.fillStyle = GOLD2; ctx.font = '400 46px "Amiri",serif';
+    ctx.fillText(opts.quote || '﴿وَفِي ذَٰلِكَ فَلْيَتَنَافَسِ الْمُتَنَافِسُونَ﴾', W / 2, 915);
+    const date = new Date().toLocaleDateString('ar-EG', { year: 'numeric', month: 'long', day: 'numeric' });
+    ctx.textAlign = 'right'; ctx.fillStyle = '#cfc8ac'; ctx.font = '400 32px "Cairo",sans-serif'; ctx.fillText('تاريخ الإصدار', W - 190, 1045);
+    ctx.fillStyle = GOLD2; ctx.font = '700 38px "Cairo",sans-serif'; ctx.fillText(date, W - 190, 1095);
+    ctx.fillStyle = '#7d8a80'; ctx.font = '400 26px "Cairo",sans-serif'; ctx.fillText('رقم الشهادة: ' + (opts.serial || ''), W - 190, 1145);
+    ctx.textAlign = 'left'; ctx.fillStyle = '#cfc8ac'; ctx.font = '400 32px "Cairo",sans-serif'; ctx.fillText('إشراف وتطوير', 190, 1045);
+    ctx.fillStyle = GOLD2; ctx.font = '700 52px "Amiri",serif'; ctx.fillText(opts.supervisor || 'المهندس / وائل محمد', 190, 1105);
+    ctx.strokeStyle = GOLD; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(190, 1120); ctx.lineTo(640, 1120); ctx.stroke();
+    laurel(ctx, W / 2 - 120, 1000, -1); laurel(ctx, W / 2 + 120, 1000, 1);
+    const sg = ctx.createRadialGradient(W / 2, 1080, 10, W / 2, 1080, 120); sg.addColorStop(0, '#fff3b0'); sg.addColorStop(1, GOLD);
+    ctx.fillStyle = sg; star(ctx, W / 2, 1080, 124, 16, 0.9); ctx.fill();
+    ctx.fillStyle = '#07100b'; ctx.beginPath(); ctx.arc(W / 2, 1080, 86, 0, 7); ctx.fill();
+    ctx.textAlign = 'center'; ctx.fillStyle = GOLD2; ctx.font = '700 44px "Reem Kufi","Amiri",serif';
+    ctx.fillText('المركز', W / 2, 1070); ctx.fillText('الأول', W / 2, 1118);
+    return c;
+  }
+
   function serial() {
     return 'WM-' + new Date().getFullYear() + '-' + Math.random().toString(36).slice(2, 8).toUpperCase();
   }
@@ -190,6 +257,14 @@
     fileName = (fileName || 'شهادة') .replace(/[\\/:*?"<>|]/g, '_') + '.png';
     let blob;
     try { blob = await toBlob(canvas); } catch (e) { overlay(canvas.toDataURL('image/png'), fileName); return 'overlay'; }
+
+    // 0) أندرويد WebView مخصص: حفظ مباشر في المعرض
+    try{
+      if(window.AndroidBridge&&AndroidBridge.saveImage){
+        const ok=AndroidBridge.saveImage(await blobToBase64(blob),fileName);
+        if(ok)return 'native';
+      }
+    }catch(e){}
 
     // 1) تطبيق Capacitor الأصلي (أندرويد/iOS): حفظ في الملفات ثم مشاركة
     try {
