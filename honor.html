@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>لوحة الشرف | المصحف المعلّم</title><meta name="theme-color" content="#0f281e">
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--g:#0f281e;--a:#2d6a4f;--gold:#d4af37;--bg:#f1ecdc;--ink:#1d1d1b}
+*{box-sizing:border-box}body{margin:0;font-family:Cairo,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:40px}
+#quranAuthTop{display:none!important}
+header{background:var(--g);color:#fff;padding:calc(14px + env(safe-area-inset-top)) 16px 22px;text-align:center;border-bottom:3px solid var(--gold)}
+header a{position:absolute;right:14px;top:calc(14px + env(safe-area-inset-top));color:#f6e7b0;text-decoration:none;font-size:13px}
+header h1{margin:6px 0 2px;font:700 28px 'Reem Kufi',serif;color:var(--gold)}header p{margin:0;font-size:13px;opacity:.85}
+.wrap{max-width:640px;margin:0 auto;padding:12px}
+.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px #0001}
+.me{text-align:center}.me .em{font-size:46px}.me h2{margin:4px 0;font:700 24px 'Reem Kufi',serif;color:var(--g)}
+.pts{font-size:34px;font-weight:800;color:var(--a)}.sub{font-size:13px;color:#666}
+.bar{height:10px;background:#e8e3cf;border-radius:9px;overflow:hidden;margin:10px 0 4px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--gold))}
+.stats{display:flex;justify-content:space-around;margin-top:10px;font-size:13px}.stats b{display:block;font-size:20px;color:var(--g)}
+.tabs{display:flex;gap:8px;margin-bottom:10px}.tabs button{flex:1;padding:11px;border:0;border-radius:12px;background:#fff;font:700 14px Cairo;color:#555;cursor:pointer}
+.tabs button.on{background:var(--g);color:var(--gold)}
+.row{display:flex;align-items:center;gap:10px;padding:10px 6px;border-bottom:1px solid #eee}.row:last-child{border:0}
+.row.me2{background:#fdf6d8;border-radius:10px}
+.rk{min-width:34px;text-align:center;font-weight:800;font-size:18px}.nm{flex:1;line-height:1.5}.nm small{display:block;color:#777;font-size:12px}
+.sc{font-weight:800;color:var(--a)}
+.msg{text-align:center;color:#777;padding:22px 8px;line-height:1.9}
+.sw{display:flex;align-items:center;gap:10px;justify-content:center;font-size:14px;margin-top:12px}
+details summary{cursor:pointer;font-weight:700;color:var(--g)}details li{margin:6px 0;font-size:14px}
+
+.owner-name{background:linear-gradient(90deg,#1d9bf0,#d4af37,#1d9bf0);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;animation:sh 3s linear infinite}
+@keyframes sh{to{background-position:200% center}}
+.gold-name{background:linear-gradient(90deg,#b8860b,#f5d76e,#b8860b);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800}
+.champ{display:block;margin:12px auto 0;padding:12px 18px;border:0;border-radius:14px;background:linear-gradient(90deg,#b8860b,#f5d76e,#b8860b);color:#2b1d00;font:800 15px Cairo;cursor:pointer;box-shadow:0 4px 16px #b8860b66}
+.note{font-size:13px;color:#8a6d0b;background:#fdf3d0;border-radius:10px;padding:8px 10px;margin-top:10px;line-height:1.8}
+#champM{position:fixed;inset:0;background:#000c;z-index:9999;display:none;align-items:center;justify-content:center;padding:14px}#champM.show{display:flex}
+#champM .box{background:#fff;border-radius:18px;width:min(560px,100%);max-height:92vh;overflow:auto;padding:16px;text-align:center}
+#champM canvas{width:100%;height:auto;border-radius:8px;margin:10px 0;box-shadow:0 4px 16px #0006}
+#champM button{padding:11px 18px;border:0;border-radius:12px;font:800 14px Cairo;cursor:pointer;margin:3px}
+.rp{border:0;background:none;font-size:14px;opacity:.45;cursor:pointer;padding:4px}.rp:hover{opacity:1}
+</style></head><body>
+<script src="theme.js"></script>
+<header><a href="index.html"><i class="fas fa-arrow-right"></i> المصحف</a><h1>🏆 لوحة الشرف</h1><p>تنافس في التسميع بنيّة صالحة، وارتقِ في الألقاب</p></header>
+<div class="wrap">
+  <div class="card me" id="me"></div>
+  <div class="tabs" style="margin-bottom:6px"><button id="kSeason" class="on">🏆 الدوري</button><button id="kRec">🎙 التسميع</button><button id="kRead">📖 القراءة</button></div>
+  <div class="tabs" id="periodTabs" style="display:none"><button id="tWeek" class="on">هذا الأسبوع</button><button id="tSeason">🗓 الموسم</button><button id="tAll">كل الأوقات</button></div>
+  <div class="card" id="seasonCard" style="display:none;text-align:center"></div>
+  <div class="card" id="list"><div class="msg">جاري التحميل...</div></div>
+  <div class="card" id="histCard" style="display:none"><b>🏆 إنجازات المواسم السابقة</b><div id="hist" style="margin-top:8px"></div></div>
+  <div class="card"><details><summary>كيف تُحسب النقاط؟ وما الألقاب؟</summary>
+    <ul style="padding-inline-start:20px"><li>كل آية تُسمِّعها بنجاح: <b>10</b> نقاط</li><li>إتمام سورة كاملة: <b>100</b> نقطة إضافية</li><li>إنهاء درس تجويد (فيديو): <b>50</b> نقطة</li><li>اجتياز اختبار تجويد: <b>100</b> نقطة</li><li>كويز الآيات: <b>5</b> نقاط لكل إجابة صحيحة (حتى 150 يوميًا)</li><li><b>لوحة القراءة:</b> كل صفحة تقرؤها (6 ثوانٍ فأكثر) = <b>3</b> نقاط، بحد أقصى 30 صفحة يوميًا</li></ul>
+    <div id="legend"></div></details></div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+  if (window.__QURAN_FIREBASE_AUTH__) return;
+  window.__QURAN_FIREBASE_AUTH__ = true;
+  const firebaseConfig = {
+    apiKey: "AIzaSyDs2ftWbd72s_rvCq_LCOvO9sgk94NVsoc",
+    authDomain: "eng-wael.firebaseapp.com",
+    projectId: "eng-wael",
+    storageBucket: "eng-wael.firebasestorage.app",
+    messagingSenderId: "176615840930",
+    appId: "1:176615840930:web:38265690bda1981b254bfb",
+    measurementId: "G-LFRVMZFDY8"
+  };
+
+  if (!window.firebase) {
+    console.error('Firebase SDK لم يتم تحميله.');
+    return;
+  }
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  try { auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); } catch(e) {}
+
+  const readyResolve = {};
+  const ready = new Promise(resolve => readyResolve.resolve = resolve);
+  let currentUser = null;
+  let booted = false;
+
+  const localKeys = () => {
+    const out = {};
+    for (let i=1;i<=114;i++) {
+      const p = localStorage.getItem(`progress_surah_${i}`);
+      const r = localStorage.getItem(`recited_surah_${i}`);
+      if (p || r) out[String(i)] = {
+        completed: p ? JSON.parse(p) : [],
+        recited: r ? JSON.parse(r) : []
+      };
+    }
+    return out;
+  };
+  const union = (a,b) => Array.from(new Set([...(a||[]),...(b||[])])).map(Number).sort((x,y)=>x-y);
+  const dateKey = () => new Date().toISOString().slice(0,10);
+
+  function ensureStyles(){
+    if(document.getElementById('quran-auth-styles')) return;
+    const s=document.createElement('style'); s.id='quran-auth-styles';
+    s.textContent=`
+      #quranAuthTop{position:fixed;top:12px;left:12px;z-index:5000;display:flex;gap:7px;align-items:center;font-family:Cairo,sans-serif}
+      #quranAuthTop button{border:0;border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer;background:#d4af37;color:#111;box-shadow:0 3px 12px #0002}
+      #quranAuthTop .auth-name{background:#0f281e;color:#fff;padding:8px 12px;border-radius:10px;font-size:12px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      #quranAuthOverlay{position:fixed;inset:0;background:linear-gradient(135deg,#06140eeb,#0f281ef5);z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px;font-family:Cairo,sans-serif}
+      #quranAuthCard{width:min(440px,100%);background:#fff;border-radius:22px;padding:25px;box-shadow:0 25px 80px #0008;text-align:right;direction:rtl;max-height:92vh;overflow:auto}
+      #quranAuthCard .auth-logo{width:66px;height:66px;border-radius:18px;background:#0f281e;color:#d4af37;display:grid;place-items:center;margin:0 auto 12px;font-size:30px}
+      #quranAuthCard h2{margin:0;text-align:center;color:#0f281e;font-family:Amiri,serif;font-size:29px}
+      #quranAuthCard .auth-sub{text-align:center;color:#667085;font-size:13px;margin:5px 0 18px}
+      #quranAuthCard input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #d0d5dd;border-radius:10px;margin:6px 0;font-family:Cairo,sans-serif;outline:none}
+      #quranAuthCard input:focus{border-color:#2d6a4f;box-shadow:0 0 0 3px #2d6a4f18}
+      #quranAuthCard .auth-primary{width:100%;padding:12px;border:0;border-radius:10px;background:#2d6a4f;color:#fff;font-weight:800;cursor:pointer;margin-top:8px}
+      #quranAuthCard .auth-secondary{width:100%;padding:10px;border:1px solid #d4af37;border-radius:10px;background:#fff;color:#0f281e;font-weight:700;cursor:pointer;margin-top:8px}
+      #quranAuthCard .auth-link{background:none;border:0;color:#2d6a4f;font-weight:700;cursor:pointer;padding:8px}
+      #quranAuthCard .auth-msg{min-height:22px;text-align:center;font-size:13px;font-weight:700;margin:7px 0;color:#b42318}
+      #quranAuthCard .auth-ok{color:#067647}
+      #quranAuthCard .auth-privacy{font-size:10px;color:#98a2b3;text-align:center;margin-top:12px;line-height:1.7}
+      body.auth-locked{overflow:hidden}
+    `;
+    document.head.appendChild(s);
+  }
+
+  function ensureUI(){
+    ensureStyles();
+    if(!document.getElementById('quranAuthTop')){
+      const top=document.createElement('div'); top.id='quranAuthTop';
+      top.innerHTML='<span class="auth-name" id="quranAuthName">حسابي</span><button id="quranAuthLogout">خروج</button>';
+      document.body.appendChild(top);
+      top.querySelector('#quranAuthLogout').onclick=()=>auth.signOut().then(()=>location.reload());
+    }
+    if(!document.getElementById('quranAuthOverlay')){
+      const ov=document.createElement('div'); ov.id='quranAuthOverlay';
+      ov.innerHTML=`<div id="quranAuthCard">
+        <div class="auth-logo"></div>
+        <h2 id="authTitle">تسجيل الدخول</h2>
+        <div class="auth-sub" id="authSub">سجّل دخولك لحفظ تقدمك ومزامنته على أجهزتك</div>
+        <div id="registerFields" style="display:none">
+          <input id="authName" type="text" autocomplete="name" placeholder="الاسم الكامل *">
+          <input id="authPhone" type="tel" autocomplete="tel" placeholder="رقم الهاتف *">
+        </div>
+        <input id="authEmail" type="email" autocomplete="email" placeholder="البريد الإلكتروني *">
+        <input id="authPassword" type="password" autocomplete="current-password" placeholder="كلمة المرور *">
+        <div id="authMsg" class="auth-msg"></div>
+        <button id="authMainBtn" class="auth-primary">تسجيل الدخول</button>
+        <button id="authForgotBtn" class="auth-link">نسيت كلمة المرور؟</button>
+        <button id="authToggleBtn" class="auth-secondary">إنشاء حساب جديد</button>
+        <div class="auth-privacy">بيانات حسابك وتقدمك تُحفظ في Firebase بشكل مرتبط بحسابك.</div>
+      </div>`;
+      document.body.appendChild(ov);
+      wireAuthUI();
+    }
+  }
+
+  function setMsg(msg, ok=false){const el=document.getElementById('authMsg'); if(el){el.textContent=msg;el.className='auth-msg'+(ok?' auth-ok':'');}}
+  function busy(v){const b=document.getElementById('authMainBtn'); if(b){b.disabled=v;b.textContent=v?'جاري التنفيذ...':(document.body.dataset.authMode==='register'?'إنشاء الحساب':'تسجيل الدخول');}}
+  function wireAuthUI(){
+    const toggle=document.getElementById('authToggleBtn');
+    const forgot=document.getElementById('authForgotBtn');
+    const main=document.getElementById('authMainBtn');
+    toggle.onclick=()=>{
+      const reg=document.body.dataset.authMode==='register';
+      document.body.dataset.authMode=reg?'login':'register';
+      document.getElementById('registerFields').style.display=reg?'none':'block';
+      document.getElementById('authTitle').textContent=reg?'تسجيل الدخول':'إنشاء حساب جديد';
+      document.getElementById('authSub').textContent=reg?'سجّل دخولك لاستكمال تقدمك':'أنشئ حسابك واحفظ تقدم القرآن والتجويد على أي جهاز';
+      toggle.textContent=reg?'إنشاء حساب جديد':'لدي حساب بالفعل';
+      forgot.style.display=reg?'block':'none';
+      setMsg('');
+      main.textContent=reg?'تسجيل الدخول':'إنشاء الحساب';
+    };
+    forgot.onclick=async()=>{
+      const email=document.getElementById('authEmail').value.trim();
+      if(!email) return setMsg('اكتب بريدك الإلكتروني أولاً.');
+      try{await auth.sendPasswordResetEmail(email);setMsg('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك.',true);}catch(e){setMsg(friendlyError(e));}
+    };
+    main.onclick=async()=>{
+      const mode=document.body.dataset.authMode||'login';
+      const email=document.getElementById('authEmail').value.trim();
+      const password=document.getElementById('authPassword').value;
+      if(!email||!password) return setMsg('أدخل البريد الإلكتروني وكلمة المرور.');
+      if(mode==='register'){
+        const name=document.getElementById('authName').value.trim();
+        const phone=document.getElementById('authPhone').value.trim();
+        if(!name||!phone) return setMsg('الاسم ورقم الهاتف مطلوبان.');
+        if(password.length<6) return setMsg('كلمة المرور يجب أن تكون 6 أحرف على الأقل.');
+        busy(true);
+        try{
+          const cred=await auth.createUserWithEmailAndPassword(email,password);
+          await cred.user.updateProfile({displayName:name});
+          await setProfile(cred.user,{name,phone,email});
+          await syncLocalToCloud();
+          setMsg('تم إنشاء الحساب بنجاح. جاري فتح التطبيق...',true);
+          setTimeout(()=>location.reload(),500);
+        }catch(e){setMsg(friendlyError(e));busy(false);}
+      }else{
+        busy(true);
+        try{
+          await auth.signInWithEmailAndPassword(email,password);
+          setMsg('تم تسجيل الدخول. جاري فتح التطبيق...',true);
+          setTimeout(()=>location.reload(),500);
+        }catch(e){setMsg(friendlyError(e));busy(false);}
+      }
+    };
+  }
+
+  function friendlyError(e){
+    const c=e&&e.code||'';
+    const m={
+      'auth/invalid-email':'البريد الإلكتروني غير صحيح.',
+      'auth/user-not-found':'لا يوجد حساب بهذا البريد.',
+      'auth/wrong-password':'كلمة المرور غير صحيحة.',
+      'auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة.',
+      'auth/email-already-in-use':'هذا البريد مستخدم بالفعل.',
+      'auth/weak-password':'كلمة المرور ضعيفة؛ استخدم 6 أحرف على الأقل.',
+      'auth/too-many-requests':'محاولات كثيرة. حاول مرة أخرى بعد قليل.',
+      'auth/network-request-failed':'تأكد من اتصال الإنترنت.',
+      'auth/operation-not-allowed':'فعّل Email/Password من Firebase Authentication.',
+      'auth/api-key-not-valid.-please-pass-a-valid-api-key.':'مفتاح Firebase غير صحيح.'
+    }; return m[c]||('حدث خطأ: '+(e&&e.message?e.message:'تعذر تنفيذ العملية.'));
+  }
+
+  async function setProfile(user, extra={}){
+    if(!user) return;
+    const data={
+      name:extra.name!==undefined?extra.name:(user.displayName||localStorage.getItem('studentName')||''), phone:extra.phone!==undefined?extra.phone:(localStorage.getItem('studentPhone')||''), email:user.email||extra.email||'',
+      uid:user.uid, lastSeen:firebase.firestore.FieldValue.serverTimestamp()
+    };
+    await db.collection('users').doc(user.uid).set(data,{merge:true});
+    localStorage.setItem('studentName',data.name);
+    localStorage.setItem('studentPhone',data.phone);
+  }
+
+  async function syncLocalToCloud(){
+    const user=auth.currentUser; if(!user||user.isAnonymous) return;
+    const local=localKeys();
+    if(Object.keys(local).length){
+      const ref=db.collection('users').doc(user.uid);
+      const snap=await ref.get(); const cloud=(snap.exists&&snap.data().quranProgress)||{};
+      const merged={...cloud};
+      for(const [s,v] of Object.entries(local)) merged[s]={completed:union(cloud[s]?.completed,v.completed),recited:union(cloud[s]?.recited,v.recited),updatedAt:new Date().toISOString()};
+      await ref.set({quranProgress:merged,lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+      for(const [s,v] of Object.entries(merged)){
+        localStorage.setItem(`progress_surah_${s}`,JSON.stringify(v.completed||[]));
+        localStorage.setItem(`recited_surah_${s}`,JSON.stringify(v.recited||[]));
+      }
+    }
+  }
+
+  async function restoreCloudToLocal(){
+    const user=auth.currentUser; if(!user||user.isAnonymous) return;
+    const snap=await db.collection('users').doc(user.uid).get();
+    if(!snap.exists) return;
+    const data=snap.data()||{};
+    if(data.name) localStorage.setItem('studentName',data.name);
+    if(data.phone) localStorage.setItem('studentPhone',data.phone);
+    const qp=data.quranProgress||{};
+    for(const [s,v] of Object.entries(qp)){
+      localStorage.setItem(`progress_surah_${s}`,JSON.stringify(v.completed||[]));
+      localStorage.setItem(`recited_surah_${s}`,JSON.stringify(v.recited||[]));
+    }
+    if(data.settings?.dailyGoal) localStorage.setItem('dailyGoal',JSON.stringify(data.settings.dailyGoal));
+  }
+
+  async function boot(user){
+    currentUser=user;
+    ensureUI();
+    const overlay=document.getElementById('quranAuthOverlay');
+    const top=document.getElementById('quranAuthTop');
+    if(user){
+      document.body.classList.remove('auth-locked');
+      if(overlay) overlay.style.display='none';
+      if(top) top.style.display='flex';
+      const name=user.displayName||localStorage.getItem('studentName')||user.email||'حسابي';
+      const n=document.getElementById('quranAuthName'); if(n)n.textContent=name;
+      if(!user.isAnonymous){
+        try { await setProfile(user); await syncLocalToCloud(); await restoreCloudToLocal(); } catch(e){console.warn('Firebase sync:',e);}
+      }
+    }else{
+      document.body.classList.add('auth-locked');
+      if(overlay) overlay.style.display='flex';
+      if(top) top.style.display='none';
+    }
+    if(!booted){booted=true;readyResolve.resolve(user?user.uid:null);}
+    if(user && !user.isAnonymous){ const inp=document.getElementById('studentNameInput'); if(inp) inp.value=user.displayName||localStorage.getItem('studentName')||''; }
+  }
+
+  window.QuranFirebase={
+    uid:null, ready,
+    get user(){return currentUser;},
+    get isLoggedIn(){return !!currentUser&&!currentUser.isAnonymous;},
+    auth,db,
+    async loadQuranProgress(s){await ready;if(!currentUser||currentUser.isAnonymous)return null;const snap=await db.collection('users').doc(currentUser.uid).get();return snap.exists?(snap.data().quranProgress||{})[String(s)]||null:null;},
+    async loadAllQuranProgress(){await ready;if(!currentUser||currentUser.isAnonymous)return null;const snap=await db.collection('users').doc(currentUser.uid).get();return snap.exists?(snap.data().quranProgress||{}):{};},
+    async saveQuranProgress(s,completed,recited){await ready;if(!currentUser||currentUser.isAnonymous)return false;await db.collection('users').doc(currentUser.uid).set({quranProgress:{[String(s)]:{completed:Array.from(completed||[]),recited:Array.from(recited||[]),updatedAt:new Date().toISOString()}},lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});return true;},
+    async saveDailyCompleted(date,s,completed){await ready;if(!currentUser||currentUser.isAnonymous)return false;await db.collection('users').doc(currentUser.uid).collection('daily').doc(`${date}_${s}`).set({date,surah:Number(s),completed:Array.from(completed||[]),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});return true;},
+    async loadDailyCompleted(date,s){await ready;if(!currentUser||currentUser.isAnonymous)return null;const x=await db.collection('users').doc(currentUser.uid).collection('daily').doc(`${date}_${s}`).get();return x.exists?(x.data().completed||[]):null;},
+    async saveDailyGoal(goal){await ready;if(!currentUser||currentUser.isAnonymous)return false;await db.collection('users').doc(currentUser.uid).collection('settings').doc('dailyGoal').set({...goal,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});return true;},
+    async loadDailyGoal(){await ready;if(!currentUser||currentUser.isAnonymous)return null;const x=await db.collection('users').doc(currentUser.uid).collection('settings').doc('dailyGoal').get();return x.exists?x.data():null;},
+    async saveTajweedPass(id,passed=true){await ready;if(!currentUser||currentUser.isAnonymous)return false;await db.collection('users').doc(currentUser.uid).collection('tajweed').doc(String(id)).set({passed,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});return true;},
+    async loadTajweedPass(id){await ready;if(!currentUser||currentUser.isAnonymous)return null;const x=await db.collection('users').doc(currentUser.uid).collection('tajweed').doc(String(id)).get();return x.exists?x.data().passed===true:null;},
+    async deleteAllCloudProgress(){await ready;if(!currentUser||currentUser.isAnonymous)return false;const ref=db.collection('users').doc(currentUser.uid);const snap=await ref.get();const qp=snap.exists?(snap.data().quranProgress||{}):{};const updates={};Object.keys(qp).forEach(k=>updates[`quranProgress.${k}`]=firebase.firestore.FieldValue.delete());await ref.update(updates).catch(()=>{});const daily=await ref.collection('daily').get();const batch=db.batch();daily.forEach(d=>batch.delete(d.ref));const taj=await ref.collection('tajweed').get();taj.forEach(d=>batch.delete(d.ref));await batch.commit();return true;}
+  };
+  auth.onAuthStateChanged(boot);
+  if ('serviceWorker' in navigator && location.protocol === 'https:') { navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
+})();
+</script>
+<div id="champM"><div class="box"><h3 style="margin:0">🏆 شهادة المركز الأول</h3><canvas id="champC"></canvas>
+<button style="background:#d4af37" onclick="saveChamp()">⬇ حفظ / مشاركة</button><button onclick="document.getElementById('champM').classList.remove('show')">إغلاق</button></div></div>
+<script src="certificate.js"></script>
+<script src="honor.js"></script>
+<script>
+const $=id=>document.getElementById(id),ar=n=>Number(n).toLocaleString('ar-EG');
+let period='week',kind='recite',mode='season';
+let champInfo=null;
+async function openChamp(){
+  const F=window.QuranFirebase,c=WMHonor.compute();
+  await WMCert.draw({canvas:$('champC'),variant:'champion',name:champInfo.name,
+    line1:`لتصدّره لوحة الشرف في ${champInfo.kind==='read'?'قراءة':'تسميع'} القرآن الكريم (${champInfo.scope})`,
+    line2:champInfo.kind==='read'?`برصيد ${ar(champInfo.pts)} نقطة • ${ar(c.pagesRead)} صفحة مقروءة`:`برصيد ${ar(champInfo.pts)} نقطة • ${ar(c.ayahs)} آية • ${ar(c.surahs)} سورة`,serial:WMCert.serial()});
+  $('champM').classList.add('show');
+}
+async function saveChamp(){await WMCert.save($('champC'),'شهادة_المركز_الأول')}
+
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+$('legend').innerHTML='<b>مراتب الموسم (تتجدد كل شهر):</b><ol style="padding-inline-start:20px">'+WMHonor.RANKS.map((l,k)=>`<li>${l[0]} <b>${l[1]}</b> — تسميع من ${ar(WMHonor.LTH.recite[k])} نقطة • قراءة من ${ar(WMHonor.LTH.read[k])} نقطة</li>`).join('')+'</ol><b>ألقاب التسميع:</b><ol style="padding-inline-start:20px">'+WMHonor.TIERS.map(t=>`<li>${t[1]} <b>${t[2]}</b> — من ${ar(t[0])} نقطة</li>`).join('')+'</ol><b>مراتب الدوري الشهري (تتجدد كل شهر):</b><ol style="padding-inline-start:20px">'+WMHonor.LEAGUES.map(l=>`<li>${l.e} <b>${l.n}</b> — ${l.up?`للصعود: ${ar(l.up)} نقطة`:'القمة'} ${l.stay?`• للبقاء: ${ar(l.stay)} نقطة وإلا تنزل مرتبة`:''}</li>`).join('')+'</ol><b>ألقاب القراءة:</b><ol style="padding-inline-start:20px">'+WMHonor.RTIERS.map(t=>`<li>${t[1]} <b>${t[2]}</b> — من ${ar(t[0])} صفحة</li>`).join('')+'</ol>';
+const rpBtn=(r,mine)=>mine||r.badge==='owner'?'':`<button class="rp" data-u="${esc(r.uid)}" data-n="${esc(r.name||'')}" title="الإبلاغ عن اسم مسيء">🚩</button>`;
+$('list').addEventListener('click',async e=>{const b=e.target.closest('.rp');if(!b)return;
+  if(!confirm('الإبلاغ عن هذا الاسم باعتباره مسيئًا؟ سيراجعه المطوّر.'))return;
+  try{const r=await WMHonor.report(b.dataset.u,b.dataset.n,'اسم مسيء');alert(r==='dup'?'سبق أن أبلغت عن هذا الحساب.':'تم إرسال البلاغ، شكرًا لك.')}catch(x){alert('تعذّر إرسال البلاغ، تأكد من الاتصال وتسجيل الدخول.')}});
+function renderMe(){
+  if(mode==='season'){return}
+  const c=WMHonor.compute(),R=kind==='read',t=R?WMHonor.rtier(c.pagesRead):WMHonor.tier(c.points),cur=R?c.pagesRead:c.points,val=R?c.readPts:c.points;
+  const pct=t.next?Math.min(100,Math.round((cur-t.from)/(t.next[0]-t.from)*100)):100;
+  const days=Object.keys(JSON.parse(localStorage.getItem('kh_read')||'{}')).length;
+  $('me').innerHTML=`<div class="em">${t.emoji}</div><h2>${t.name}</h2><div class="pts">${ar(val)} <small style="font-size:14px">نقطة</small></div>
+   <div class="bar"><i style="width:${pct}%"></i></div>
+   <div class="sub">${t.next?`باقي ${ar(t.next[0]-cur)} ${R?'صفحة':'نقطة'} للقب «${t.next[2]}» ${t.next[1]}`:'وصلتَ لأعلى لقب، بارك الله فيك 🌙'}</div>
+   <div class="stats">${R?`<div><b>${ar(c.pagesRead)}</b>صفحة</div><div><b>${ar(days)}</b>يوم قراءة</div><div><b>${ar(c.readPts)}</b>نقطة</div>`:`<div><b>${ar(c.ayahs)}</b>آية</div><div><b>${ar(c.surahs)}</b>سورة</div><div><b>${ar(c.videos)}</b>درس</div>`}</div>
+   <div id="champ"></div>
+   <div style="margin-top:12px"><input id="alias" maxlength="24" placeholder="اسم مستعار يظهر في لوحة الشرف (اختياري)" value="${esc(WMHonor.getAlias())}" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:10px;text-align:center;font:600 14px Cairo"><button id="saveAlias" style="margin-top:6px;padding:8px 16px;border:0;border-radius:10px;background:#d4af37;font:800 13px Cairo;cursor:pointer">حفظ الاسم</button><div style="font-size:11px;color:#888;margin-top:4px">اتركه فارغًا لاستخدام اسمك الحقيقي. تظهر لوحة الشرف أعلى 20 متسابقًا فقط.</div></div>
+   <label class="sw"><input type="checkbox" id="showMe" ${WMHonor.isHidden()?'':'checked'}> أظهر اسمي في لوحة الشرف</label>`;
+  $('saveAlias').onclick=async()=>{WMHonor.setAlias($('alias').value);try{await WMHonor.publish();await load()}catch(x){}$('saveAlias').textContent='تم الحفظ ✅'};
+  $('showMe').onchange=async e=>{WMHonor.setHidden(!e.target.checked);try{await WMHonor.publish();await load()}catch(x){}};
+}
+function seasonUI(R){
+  const sc=$('seasonCard'),hc=$('histCard');
+  if(period!=='season'){sc.style.display=hc.style.display='none';return}
+  const sp=WMHonor.seasonPts(),val=R?sp.readPts:sp.pts,L=WMHonor.league(val,R?'read':'recite'),ms=WMHonor.seasonLeft(),d=Math.floor(ms/864e5),hh=Math.floor(ms%864e5/36e5);
+  const pct=L.next!=null?Math.min(100,Math.round((val-L.from)/(L.next-L.from)*100)):100;
+  sc.style.display='block';
+  sc.innerHTML=`<div class="sub">${WMHonor.seasonName(WMHonor.seasonKey())}</div><div style="font-size:44px">${L.emoji}</div><h2 style="margin:2px 0;font:700 22px 'Reem Kufi',serif;color:#0f281e">مرتبة ${L.name}</h2>
+   <div class="pts" style="font-size:28px">${ar(val)} <small style="font-size:13px">نقطة موسمية</small></div><div class="bar"><i style="width:${pct}%"></i></div>
+   <div class="sub">${L.next!=null?`باقي ${ar(L.next-val)} نقطة للمرتبة التالية`:'وصلتَ لأعلى مرتبة 🔥'}</div>
+   <div class="note" style="margin-top:10px">⏳ ينتهي الموسم بعد ${ar(d)} يومًا و${ar(hh)} ساعة، ثم يبدأ موسم جديد وتبدأ مراتب الجميع من البرونزي 🌱</div>`;
+  WMHonor.history().then(hs=>{
+    hc.style.display='block';const medal=['🥇','🥈','🥉'];
+    $('hist').innerHTML=hs.length?hs.map(x=>{const a=WMHonor.league(x.pts,'recite'),b=WMHonor.league(x.readPts,'read');
+      return `<div class="row"><div class="rk">${x.pr&&x.pr<=3?medal[x.pr-1]:(x.pd&&x.pd<=3?medal[x.pd-1]:'🗓')}</div><div class="nm">${WMHonor.seasonName(x.key)}<small>التسميع: ${a.emoji} ${a.name}${x.pr?' • المركز '+ar(x.pr):''}<br>القراءة: ${b.emoji} ${b.name}${x.pd?' • المركز '+ar(x.pd):''}</small></div></div>`}).join(''):'<div class="msg" style="padding:10px">لا توجد مواسم سابقة بعد. أول موسم لك يُسجَّل بعد انتهاء الشهر الحالي.</div>';
+  }).catch(()=>{});
+}
+
+async function loadSeason(){
+  $('periodTabs').style.display='none';$('list').innerHTML='<div class="msg">جاري التحميل...</div>';
+  try{
+    const F=window.QuranFirebase;await F.ready;
+    if(!F.isLoggedIn){$('me').innerHTML='';$('list').innerHTML='<div class="msg">سجّل الدخول بحسابك لتشارك في الدوري الشهري.</div>';return}
+    await WMHonor.publish();
+    const LG=WMHonor.LEAGUES,st=JSON.parse(localStorage.getItem('lg_state')),c=WMHonor.compute(),xp=WMHonor.seasonXP(st,c),L=LG[st.league],msg=WMHonor.takeMsg();
+    const pct=L.up!=null?Math.min(100,Math.round(xp/L.up*100)):100;let hint;
+    if(st.league>0&&xp<L.stay)hint=`⚠️ تحتاج <b>${ar(L.stay-xp)}</b> نقطة لتثبت في المرتبة ${L.n} وإلا ستنزل إلى ${LG[st.league-1].n} ${LG[st.league-1].e}`;
+    else if(L.up!=null)hint=`باقي <b>${ar(L.up-xp)}</b> نقطة للصعود إلى المرتبة ${LG[st.league+1].n} ${LG[st.league+1].e}`;
+    else hint=`أنت في القمة 👑 حافظ على ${ar(L.stay)} نقطة شهريًا لتبقى ملكًا`;
+    let card='';
+    if(msg){const up=msg.to>msg.from,dn=msg.to<msg.from;
+      card=`<div class="note" style="background:${up?'#e6f6ec':dn?'#fdeaea':'#f2f2f2'};color:#222">${up?'🎉 ترقّيت':dn?'⬇️ نزلت':'✅ ثبتّ'} في موسم ${WMHonor.seasonName(msg.season)}: ${up||dn?`من ${LG[msg.from].n} إلى <b>${LG[msg.to].n} ${LG[msg.to].e}</b>`:`في المرتبة ${LG[msg.to].n}`} (حصلت على ${ar(msg.xp)} نقطة)</div>`}
+    $('me').innerHTML=`<div class="em">${L.e}</div><h2 style="color:${L.c}">المرتبة ${L.n}</h2>
+      <div class="sub">موسم ${WMHonor.seasonName(st.season)} • يتجدد بعد <b>${ar(WMHonor.daysLeft())}</b> يومًا</div>
+      <div class="pts">${ar(xp)} <small style="font-size:14px">نقطة هذا الموسم</small></div>
+      <div class="bar"><i style="width:${pct}%;background:${L.c}"></i></div><div class="sub">${hint}</div>${card}
+      <div class="sub" style="margin-top:8px;font-size:11px">نقاط الموسم = نقاط التسميع والكويز والتجويد + نقاط القراءة. تبدأ من الصفر كل شهر.</div>`;
+    const [rows,champs]=await Promise.all([WMHonor.seasonTop(st.league),WMHonor.prevChampions().catch(()=>[])]);
+    const my=F.user.uid,medal=['🥇','🥈','🥉'];
+    const rowHTML=(r,i)=>{const type=r.badge==='owner'?'owner':(i<3?'leader':''),
+      nm=type==='owner'?`<span class="owner-name">${esc(r.name||'طالب')}</span>`:(i===0?`<span class="gold-name">👑 ${esc(r.name||'طالب')}</span>`:esc(r.name||'طالب'));
+      return `<div class="row${r.uid.endsWith('_'+my)?' me2':''}"><div class="rk">${medal[i]||ar(i+1)}</div><div class="nm">${nm}${WMHonor.badge(type)}${r.uid.endsWith('_'+my)?' (أنت)':''}<small>${LG[r.league||0].e} ${LG[r.league||0].n}</small></div><div class="sc">${ar(r.xp||0)}</div>${rpBtn(r,r.uid.endsWith('_'+my))}</div>`};
+    let html=`<h3 style="margin:0 0 8px;color:${L.c}">${L.e} ترتيب دوري المرتبة ${L.n}</h3>`+(rows.length?rows.map(rowHTML).join(''):'<div class="msg">لا يوجد متنافسون بعد في مرتبتك هذا الموسم. كن الأول! 🌟</div>');
+    if(champs.length)html+=`<h3 style="margin:18px 0 8px">🏆 أبطال موسم ${WMHonor.seasonName(WMHonor.prevKey(st.season))}</h3>`+champs.map((r,i)=>`<div class="row"><div class="rk">${medal[i]}</div><div class="nm">${r.badge==='owner'?`<span class="owner-name">${esc(r.name||'طالب')}</span>`:esc(r.name||'طالب')}${WMHonor.badge(r.badge==='owner'?'owner':'leader')}<small>${LG[r.league||0].e} ${LG[r.league||0].n}</small></div><div class="sc">${ar(r.xp||0)}</div></div>`).join('');
+    if((st.hist||[]).length)html+=`<h3 style="margin:18px 0 8px">📅 سجل مواسمي</h3>`+st.hist.map(h=>`<div class="row"><div class="nm">${WMHonor.seasonName(h.s)}<small>${LG[h.league].e} ${LG[h.league].n} ${h.to>h.league?'← ترقّيت إلى '+LG[h.to].n+' ⬆️':h.to<h.league?'← نزلت إلى '+LG[h.to].n+' ⬇️':'← ثبتّ'}</small></div><div class="sc">${ar(h.xp)}</div></div>`).join('');
+    $('list').innerHTML=html;
+  }catch(e){
+    $('list').innerHTML='<div class="msg">'+(e&&e.code==='permission-denied'?'لم تُفعَّل صلاحيات الدوري في قاعدة البيانات بعد (إعداد من المطوّر).':'تعذّر تحميل الدوري. تأكد من الإنترنت ثم أعد المحاولة.')+'</div>';
+  }
+}
+async function load(){
+  if(mode==='season')return loadSeason();
+  $('list').innerHTML='<div class="msg">جاري التحميل...</div>';
+  try{
+    const F=window.QuranFirebase;await F.ready;
+    if(!F.isLoggedIn){$('list').innerHTML='<div class="msg">سجّل الدخول بحسابك لتظهر في لوحة الشرف.</div>';return}
+    await WMHonor.publish();
+    const rows=await WMHonor.top(period,kind),R=kind==='read',key=R?(period==='week'?'readWeek':'readPts'):(period==='week'?'weekPoints':period==='season'?'pts':'points'),my=F.user.uid;
+    seasonUI(R);
+    $('champ').innerHTML='';
+    if(!rows.length){$('list').innerHTML='<div class="msg">لا يوجد متسابقون بعد. كن أول من يسجّل نقاطًا 🌟</div>';return}
+    const medal=['🥇','🥈','🥉'];
+    const isMeIdx=rows.findIndex(r=>r.uid===my);
+    $('list').innerHTML=rows.map((r,i)=>{
+      const type=r.badge==='owner'?'owner':(i<10?'leader':''),
+        nm=type==='owner'?`<span class="owner-name">${esc(r.name||'طالب')}</span>`:(i===0?`<span class="gold-name">👑 ${esc(r.name||'طالب')}</span>`:esc(r.name||'طالب'));
+      return `<div class="row${r.uid===my?' me2':''}"><div class="rk">${medal[i]||ar(i+1)}</div>
+      <div class="nm">${nm}${WMHonor.badge(type)}${r.uid===my?' (أنت)':''}<small>${type==='owner'?'🛠 مطوّر التطبيق • ':''}${period==='season'?WMHonor.league(r[key]||0,kind).emoji+' مرتبة '+WMHonor.league(r[key]||0,kind).name:R?WMHonor.rtier(r.pagesRead||0).emoji+' '+WMHonor.rtier(r.pagesRead||0).name+' • '+ar(r.pagesRead||0)+' صفحة':WMHonor.tier(r.points||0).emoji+' '+esc(r.title||WMHonor.tier(r.points||0).name)+' • '+ar(r.ayahs||0)+' آية'}</small></div>
+      <div class="sc">${ar(r[key]||0)}</div>${rpBtn(r,r.uid===my)}</div>`}).join('');
+    // جوائز المتصدرين
+    let h='';
+    if(isMeIdx===0){champInfo={name:rows[0].name||'طالب',pts:rows[0][key]||0,kind,scope:period==='week'?'هذا الأسبوع':period==='season'?WMHonor.seasonName(WMHonor.seasonKey()):'كل الأوقات'};
+      h+='<button class="champ" onclick="openChamp()">🏆 احصل على شهادة المركز الأول</button>'}
+    if(isMeIdx>=0&&isMeIdx<10)h+='<div class="note">🎖️ أنت من المتصدرين! يمكنك الآن تفعيل <b>الثيم الذهبي 👑</b> من إعدادات المصحف ← ألوان التطبيق، وتظهر بجوار اسمك شارة التميّز.</div>';
+    h+=`<div class="sub" style="margin-top:8px;font-size:11px">الحساب: ${esc(F.user.email||'—')}</div>`;
+    $('champ').innerHTML=h;
+    try{await WMHonor.refreshRank()}catch(x){}
+  }catch(e){
+    $('list').innerHTML='<div class="msg">'+(e&&e.code==='permission-denied'?'لم تُفعَّل صلاحيات لوحة الشرف في قاعدة البيانات بعد (إعداد من المطوّر).':'تعذّر تحميل اللوحة. تأكد من الإنترنت ثم أعد المحاولة.')+'</div>';
+  }
+}
+const setMode=(m,k)=>{mode=m;if(k)kind=k;['kSeason','kRec','kRead'].forEach(i=>$(i).classList.remove('on'));$(m==='season'?'kSeason':k==='read'?'kRead':'kRec').classList.add('on');$('periodTabs').style.display=m==='season'?'none':'flex';renderMe();load()};
+$('kSeason').onclick=()=>setMode('season');
+$('kRec').onclick=()=>setMode('board','recite');
+$('kRead').onclick=()=>setMode('board','read');
+const setP=p=>{period=p;[['tWeek','week'],['tSeason','season'],['tAll','all']].forEach(([id,k])=>$(id).classList.toggle('on',k===p));load()};
+$('tWeek').onclick=()=>setP('week');$('tSeason').onclick=()=>setP('season');$('tAll').onclick=()=>setP('all');
+$('periodTabs').style.display='none';load();
+if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script></body></html>

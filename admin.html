@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>لوحة المطوّر | المصحف المعلّم</title><meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Reem+Kufi:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--g:#0f281e;--a:#2d6a4f;--gold:#d4af37;--bg:#f1ecdc}
+*{box-sizing:border-box}body{margin:0;font-family:Cairo,sans-serif;background:var(--bg);color:#1d1d1b;padding-bottom:40px}
+#quranAuthTop{display:none!important}
+header{background:var(--g);color:#fff;padding:16px;text-align:center;border-bottom:3px solid var(--gold)}
+header h1{margin:0;font:700 26px 'Reem Kufi',serif;color:var(--gold)}header p{margin:4px 0 0;font-size:12px;opacity:.8}
+.wrap{max-width:900px;margin:0 auto;padding:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px}
+.card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px #0001}
+.k{text-align:center}.k b{display:block;font-size:26px;color:var(--a)}.k small{color:#666;font-size:12px}
+h2{font-size:16px;margin:16px 0 8px;color:var(--g)}
+.bars .r{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:13px}.bars .r span:first-child{min-width:90px}
+.bars i{display:block;height:12px;background:linear-gradient(90deg,var(--a),var(--gold));border-radius:8px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 6px;border-bottom:1px solid #eee;text-align:right}th{background:#faf6e8}
+.tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;background:#fdeaea;color:#b03030}
+button{font-family:inherit;border:0;border-radius:8px;padding:6px 10px;cursor:pointer;font-weight:700;font-size:12px}
+.b1{background:#c0392b;color:#fff}.b2{background:#2d6a4f;color:#fff}.b3{background:#eee}
+input{padding:9px;border:1px solid #ddd;border-radius:10px;width:100%;font:600 14px Cairo;margin-bottom:8px}
+.msg{text-align:center;padding:40px 10px;color:#666;line-height:2}
+.scroll{overflow-x:auto}
+</style></head><body>
+<header><h1>🛠 لوحة المطوّر</h1><p>للمطوّر فقط — إحصاءات وإدارة الأسماء</p></header>
+<div class="wrap" id="app"><div class="msg">جاري التحقق...</div></div>
+<script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+  if (window.__QURAN_FIREBASE_AUTH__) return;
+  window.__QURAN_FIREBASE_AUTH__ = true;
+  const firebaseConfig = {
+    apiKey: "AIzaSyDs2ftWbd72s_rvCq_LCOvO9sgk94NVsoc",
+    authDomain: "eng-wael.firebaseapp.com",
+    projectId: "eng-wael",
+    storageBucket: "eng-wael.firebasestorage.app",
+    messagingSenderId: "176615840930",
+    appId: "1:176615840930:web:38265690bda1981b254bfb",
+    measurementId: "G-LFRVMZFDY8"
+  };
+
+  if (!window.firebase) {
+    console.error('Firebase SDK لم يتم تحميله.');
+    return;
+  }
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+  try { auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); } catch(e) {}
+
+  const readyResolve = {};
+  const ready = new Promise(resolve => readyResolve.resolve = resolve);
+  let currentUser = null;
+  let booted = false;
+
+  const localKeys = () => {
+    const out = {};
+    for (let i=1;i<=114;i++) {
+      const p = localStorage.getItem(`progress_surah_${i}`);
+      const r = localStorage.getItem(`recited_surah_${i}`);
+      if (p || r) out[String(i)] = {
+        completed: p ? JSON.parse(p) : [],
+        recited: r ? JSON.parse(r) : []
+      };
+    }
+    return out;
+  };
+  const union = (a,b) => Array.from(new Set([...(a||[]),...(b||[])])).map(Number).sort((x,y)=>x-y);
+  const dateKey = () => new Date().toISOString().slice(0,10);
+
+  function ensureStyles(){
+    if(document.getElementById('quran-auth-styles')) return;
+    const s=document.createElement('style'); s.id='quran-auth-styles';
+    s.textContent=`
+      #quranAuthTop{position:fixed;top:12px;left:12px;z-index:5000;display:flex;gap:7px;align-items:center;font-family:Cairo,sans-serif}
+      #quranAuthTop button{border:0;border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer;background:#d4af37;color:#111;box-shadow:0 3px 12px #0002}
+      #quranAuthTop .auth-name{background:#0f281e;color:#fff;padding:8px 12px;border-radius:10px;font-size:12px;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      #quranAuthOverlay{position:fixed;inset:0;background:linear-gradient(135deg,#06140eeb,#0f281ef5);z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px;font-family:Cairo,sans-serif}
+      #quranAuthCard{width:min(440px,100%);background:#fff;border-radius:22px;padding:25px;box-shadow:0 25px 80px #0008;text-align:right;direction:rtl;max-height:92vh;overflow:auto}
+      #quranAuthCard .auth-logo{width:66px;height:66px;border-radius:18px;background:#0f281e;color:#d4af37;display:grid;place-items:center;margin:0 auto 12px;font-size:30px}
+      #quranAuthCard h2{margin:0;text-align:center;color:#0f281e;font-family:Amiri,serif;font-size:29px}
+      #quranAuthCard .auth-sub{text-align:center;color:#667085;font-size:13px;margin:5px 0 18px}
+      #quranAuthCard input{width:100%;box-sizing:border-box;padding:12px;border:1px solid #d0d5dd;border-radius:10px;margin:6px 0;font-family:Cairo,sans-serif;outline:none}
+      #quranAuthCard input:focus{border-color:#2d6a4f;box-shadow:0 0 0 3px #2d6a4f18}
+      #quranAuthCard .auth-primary{width:100%;padding:12px;border:0;border-radius:10px;background:#2d6a4f;color:#fff;font-weight:800;cursor:pointer;margin-top:8px}
+      #quranAuthCard .auth-secondary{width:100%;padding:10px;border:1px solid #d4af37;border-radius:10px;background:#fff;color:#0f281e;font-weight:700;cursor:pointer;margin-top:8px}
+      #quranAuthCard .auth-link{background:none;border:0;color:#2d6a4f;font-weight:700;cursor:pointer;padding:8px}
+      #quranAuthCard .auth-msg{min-height:22px;text-align:center;font-size:13px;font-weight:700;margin:7px 0;color:#b42318}
+      #quranAuthCard .auth-ok{color:#067647}
+      #quranAuthCard .auth-privacy{font-size:10px;color:#98a2b3;text-align:center;margin-top:12px;line-height:1.7}
+      body.auth-locked{overflow:hidden}
+    `;
+    document.head.appendChild(s);
+  }
+
+  function ensureUI(){
+    ensureStyles();
+    if(!document.getElementById('quranAuthTop')){
+      const top=document.createElement('div'); top.id='quranAuthTop';
+      top.innerHTML='<span class="auth-name" id="quranAuthName">حسابي</span><button id="quranAuthLogout">خروج</button>';
+      document.body.appendChild(top);
+      top.querySelector('#quranAuthLogout').onclick=()=>auth.signOut().then(()=>location.reload());
+    }
+    if(!document.getElementById('quranAuthOverlay')){
+      const ov=document.createElement('div'); ov.id='quranAuthOverlay';
+      ov.innerHTML=`<div id="quranAuthCard">
+        <div class="auth-logo"></div>
+        <h2 id="authTitle">تسجيل الدخول</h2>
+        <div class="auth-sub" id="authSub">سجّل دخولك لحفظ تقدمك ومزامنته على أجهزتك</div>
+        <div id="registerFields" style="display:none">
+          <input id="authName" type="text" autocomplete="name" placeholder="الاسم الكامل *">
+          <input id="authPhone" type="tel" autocomplete="tel" placeholder="رقم الهاتف *">
+        </div>
+        <input id="authEmail" type="email" autocomplete="email" placeholder="البريد الإلكتروني *">
+        <input id="authPassword" type="password" autocomplete="current-password" placeholder="كلمة المرور *">
+        <div id="authMsg" class="auth-msg"></div>
+        <button id="authMainBtn" class="auth-primary">تسجيل الدخول</button>
+        <button id="authForgotBtn" class="auth-link">نسيت كلمة المرور؟</button>
+        <button id="authToggleBtn" class="auth-secondary">إنشاء حساب جديد</button>
+        <div class="auth-privacy">بيانات حسابك وتقدمك تُحفظ في Firebase بشكل مرتبط بحسابك.</div>
+      </div>`;
+      document.body.appendChild(ov);
+      wireAuthUI();
+    }
+  }
+
+  function setMsg(msg, ok=false){const el=document.getElementById('authMsg'); if(el){el.textContent=msg;el.className='auth-msg'+(ok?' auth-ok':'');}}
+  function busy(v){const b=document.getElementById('authMainBtn'); if(b){b.disabled=v;b.textContent=v?'جاري التنفيذ...':(document.body.dataset.authMode==='register'?'إنشاء الحساب':'تسجيل الدخول');}}
+  function wireAuthUI(){
+    const toggle=document.getElementById('authToggleBtn');
+    const forgot=document.getElementById('authForgotBtn');
+    const main=document.getElementById('authMainBtn');
+    toggle.onclick=()=>{
+      const reg=document.body.dataset.authMode==='register';
+      document.body.dataset.authMode=reg?'login':'register';
+      document.getElementById('registerFields').style.display=reg?'none':'block';
+      document.getElementById('authTitle').textContent=reg?'تسجيل الدخول':'إنشاء حساب جديد';
+      document.getElementById('authSub').textContent=reg?'سجّل دخولك لاستكمال تقدمك':'أنشئ حسابك واحفظ تقدم القرآن والتجويد على أي جهاز';
+      toggle.textContent=reg?'إنشاء حساب جديد':'لدي حساب بالفعل';
+      forgot.style.display=reg?'block':'none';
+      setMsg('');
+      main.textContent=reg?'تسجيل الدخول':'إنشاء الحساب';
+    };
+    forgot.onclick=async()=>{
+      const email=document.getElementById('authEmail').value.trim();
+      if(!email) return setMsg('اكتب بريدك الإلكتروني أولاً.');
+      try{await auth.sendPasswordResetEmail(email);setMsg('تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك.',true);}catch(e){setMsg(friendlyError(e));}
+    };
+    main.onclick=async()=>{
+      const mode=document.body.dataset.authMode||'login';
+      const email=document.getElementById('authEmail').value.trim();
+      const password=document.getElementById('authPassword').value;
+      if(!email||!password) return setMsg('أدخل البريد الإلكتروني وكلمة المرور.');
+      if(mode==='register'){
+        const name=document.getElementById('authName').value.trim();
+        const phone=document.getElementById('authPhone').value.trim();
+        if(!name||!phone) return setMsg('الاسم ورقم الهاتف مطلوبان.');
+        if(password.length<6) return setMsg('كلمة المرور يجب أن تكون 6 أحرف على الأقل.');
+        busy(true);
+        try{
+          const cred=await auth.createUserWithEmailAndPassword(email,password);
+          await cred.user.updateProfile({displayName:name});
+          await setProfile(cred.user,{name,phone,email});
+          await syncLocalToCloud();
+          setMsg('تم إنشاء الحساب بنجاح. جاري فتح التطبيق...',true);
+          setTimeout(()=>location.reload(),500);
+        }catch(e){setMsg(friendlyError(e));busy(false);}
+      }else{
+        busy(true);
+        try{
+          await auth.signInWithEmailAndPassword(email,password);
+          setMsg('تم تسجيل الدخول. جاري فتح التطبيق...',true);
+          setTimeout(()=>location.reload(),500);
+        }catch(e){setMsg(friendlyError(e));busy(false);}
+      }
+    };
+  }
+
+  function friendlyError(e){
+    const c=e&&e.code||'';
+    const m={
+      'auth/invalid-email':'البريد الإلكتروني غير صحيح.',
+      'auth/user-not-found':'لا يوجد حساب بهذا البريد.',
+      'auth/wrong-password':'كلمة المرور غير صحيحة.',
+      'auth/invalid-credential':'البريد أو كلمة المرور غير صحيحة.',
+      'auth/email-already-in-use':'هذا البريد مستخدم بالفعل.',
+      'auth/weak-password':'كلمة المرور ضعيفة؛ استخدم 6 أحرف على الأقل.',
+      'auth/too-many-requests':'محاولات كثيرة. حاول مرة أخرى بعد قليل.',
+      'auth/network-request-failed':'تأكد من اتصال الإنترنت.',
+      'auth/operation-not-allowed':'فعّل Email/Password من Firebase Authentication.',
+      'auth/api-key-not-valid.-please-pass-a-valid-api-key.':'مفتاح Firebase غير صحيح.'
+    }; return m[c]||('حدث خطأ: '+(e&&e.message?e.message:'تعذر تنفيذ العملية.'));
+  }
+
+  async function setProfile(user, extra={}){
+    if(!user) return;
+    const data={
+      name:extra.name!==undefined?extra.name:(user.displayName||localStorage.getItem('studentName')||''), phone:extra.phone!==undefined?extra.phone:(localStorage.getItem('studentPhone')||''), email:user.email||extra.email||'',
+      uid:user.uid, lastSeen:firebase.firestore.FieldValue.serverTimestamp()
+    };
+    await db.collection('users').doc(user.uid).set(data,{merge:true});
+    localStorage.setItem('studentName',data.name);
+    localStorage.setItem('studentPhone',data.phone);
+  }
+
+  async function syncLocalToCloud(){
+    const user=auth.currentUser; if(!user||user.isAnonymous) return;
+    const local=localKeys();
+    if(Object.keys(local).length){
+      const ref=db.collection('users').doc(user.uid);
+      const snap=await ref.get(); const cloud=(snap.exists&&snap.data().quranProgress)||{};
+      const merged={...cloud};
+      for(const [s,v] of Object.entries(local)) merged[s]={completed:union(cloud[s]?.completed,v.completed),recited:union(cloud[s]?.recited,v.recited),updatedAt:new Date().toISOString()};
+      await ref.set({quranProgress:merged,lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+      for(const [s,v] of Object.entries(merged)){
+        localStorage.setItem(`progress_surah_${s}`,JSON.stringify(v.completed||[]));
+        localStorage.setItem(`recited_surah_${s}`,JSON.stringify(v.recited||[]));
+      }
+    }
+  }
+
+  async function restoreCloudToLocal(){
+    const user=auth.currentUser; if(!user||user.isAnonymous) return;
+    const snap=await db.collection('users').doc(user.uid).get();
+    if(!snap.exists) return;
+    const data=snap.data()||{};
+    if(data.name) localStorage.setItem('studentName',data.name);
+    if(data.phone) localStorage.setItem('studentPhone',data.phone);
+    const qp=data.quranProgress||{};
+    for(const [s,v] of Object.entries(qp)){
+      localStorage.setItem(`progress_surah_${s}`,JSON.stringify(v.completed||[]));
+      localStorage.setItem(`recited_surah_${s}`,JSON.stringify(v.recited||[]));
+    }
+    if(data.settings?.dailyGoal) localStorage.setItem('dailyGoal',JSON.stringify(data.settings.dailyGoal));
+  }
+
+  async function boot(user){
+    currentUser=user;
+    ensureUI();
+    const overlay=document.getElementById('quranAuthOverlay');
+    const top=document.getElementById('quranAuthTop');
+    if(user){
+      document.body.classList.remove('auth-locked');
+      if(overlay) overlay.style.display='none';
+      if(top) top.style.display='flex';
+      const name=user.displayName||localStorage.getItem('studentName')||user.email||'حسابي';
+      const n=document.getElementById('quranAuthName'); if(n)n.textContent=name;
+      if(!user.isAnonymous){
+        try { await setProfile(user); await syncLocalToCloud(); await restoreCloudToLocal(); } catch(e){console.warn('Firebase sync:',e);}
+      }
+    }else{
+      document.body.classList.add('auth-locked');
+      if(overlay) overlay.style.display='flex';
+      if(top) top.style.display='none';
+    }
+    if(!booted){booted=true;readyResolve.resolve(user?user.uid:null);}
+    if(user && !user.isAnonymous){ const inp=document.getElementById('studentNameInput'); if(inp) inp.value=user.displayName||localStorage.getItem('studentName')||''; }
+  }
+
+  window.QuranFirebase={
+    uid:null, ready,
+    get user(){return currentUser;},
+    get isLoggedIn(){return !!currentUser&&!currentUser.isAnonymous;},
+    auth,db,
+    async loadQuranProgress(s){await ready;if(!currentUser||currentUser.isAnonymous)return null;const snap=await db.collection('users').doc(currentUser.uid).get();return snap.exists?(snap.data().quranProgress||{})[String(s)]||null:null;},
+    async loadAllQuranProgress(){await ready;if(!currentUser||currentUser.isAnonymous)return null;const snap=await db.collection('users').doc(currentUser.uid).get();return snap.exists?(snap.data().quranProgress||{}):{};},
+    async saveQuranProgress(s,completed,recited){await ready;if(!currentUser||currentUser.isAnonymous)return false;await db.collection('users').doc(currentUser.uid).set({quranProgress:{[String(s)]:{completed:Array.from(completed||[]),recited:Array.from(recited||[]),updatedAt:new Date().toISOString()}},lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});return true;},
+    async saveDailyCompleted(date,s,completed){await ready;if(!currentUser||currentUser.isAnonymous)return false;await db.collection('users').doc(currentUser.uid).collection('daily').doc(`${date}_${s}`).set({date,surah:Number(s),completed:Array.from(completed||[]),updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});return true;},
+    async loadDailyCompleted(date,s){await ready;if(!currentUser||currentUser.isAnonymous)return null;const x=await db.collection('users').doc(currentUser.uid).collection('daily').doc(`${date}_${s}`).get();return x.exists?(x.data().completed||[]):null;},
+    async saveDailyGoal(goal){await ready;if(!currentUser||currentUser.isAnonymous)return false;await db.collection('users').doc(currentUser.uid).collection('settings').doc('dailyGoal').set({...goal,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});return true;},
+    async loadDailyGoal(){await ready;if(!currentUser||currentUser.isAnonymous)return null;const x=await db.collection('users').doc(currentUser.uid).collection('settings').doc('dailyGoal').get();return x.exists?x.data():null;},
+    async saveTajweedPass(id,passed=true){await ready;if(!currentUser||currentUser.isAnonymous)return false;await db.collection('users').doc(currentUser.uid).collection('tajweed').doc(String(id)).set({passed,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});return true;},
+    async loadTajweedPass(id){await ready;if(!currentUser||currentUser.isAnonymous)return null;const x=await db.collection('users').doc(currentUser.uid).collection('tajweed').doc(String(id)).get();return x.exists?x.data().passed===true:null;},
+    async deleteAllCloudProgress(){await ready;if(!currentUser||currentUser.isAnonymous)return false;const ref=db.collection('users').doc(currentUser.uid);const snap=await ref.get();const qp=snap.exists?(snap.data().quranProgress||{}):{};const updates={};Object.keys(qp).forEach(k=>updates[`quranProgress.${k}`]=firebase.firestore.FieldValue.delete());await ref.update(updates).catch(()=>{});const daily=await ref.collection('daily').get();const batch=db.batch();daily.forEach(d=>batch.delete(d.ref));const taj=await ref.collection('tajweed').get();taj.forEach(d=>batch.delete(d.ref));await batch.commit();return true;}
+  };
+  auth.onAuthStateChanged(boot);
+  if ('serviceWorker' in navigator && location.protocol === 'https:') { navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
+})();
+</script>
+<script>
+const SURAHS=[
+        "1. الفاتحة", "2. البقرة", "3. آل عمران", "4. النساء", "5. المائدة", "6. الأنعام", "7. الأعراف", "8. الأنفال", "9. التوبة", "10. يونس",
+        "11. هود", "12. يوسف", "13. الرعد", "14. إبراهيم", "15. الحجر", "16. النحل", "17. الإسراء", "18. الكهف", "19. مريم", "20. طه",
+        "21. الأنبياء", "22. الحج", "23. المؤمنون", "24. النور", "25. الفرقان", "26. الشعراء", "27. النمل", "28. القصص", "29. العنكبوت", "30. الروم",
+        "31. لقمان", "32. السجدة", "33. الأحزاب", "34. سبأ", "35. فاطر", "36. يس", "37. الصافات", "38. ص", "39. الزمر", "40. غافر",
+        "41. فصلت", "42. الشورى", "43. الزخرف", "44. الدخان", "45. الجاثية", "46. الأحقاف", "47. محمد", "48. الفتح", "49. الحجرات", "50. ق",
+        "51. الذاريات", "52. الطور", "53. النجم", "54. القمر", "55. الرحمن", "56. الواقعة", "57. الحديد", "58. المجادلة", "59. الحشر", "60. الممتحنة",
+        "61. الصف", "62. الجمعة", "63. المنافقون", "64. التغابن", "65. الطلاق", "66. التحريم", "67. الملك", "68. القلم", "69. الحاقة", "70. المعارج",
+        "71. نوح", "72. الجن", "73. المزمل", "74. المدثر", "75. القيامة", "76. الإنسان", "77. المرسلات", "78. النبأ", "79. النازعات", "80. عبس",
+        "81. التكوير", "82. الانفطار", "83. المطففين", "84. الانشقاق", "85. البروج", "86. الطارق", "87. الأعلى", "88. الغاشية", "89. الفجر", "90. البلد",
+        "91. الشمس", "92. الليل", "93. الضحى", "94. الشرح", "95. التين", "96. العلق", "97. القدر", "98. البينة", "99. الزلزلة", "100. العاديات",
+        "101. القارعة", "102. التكاثر", "103. العصر", "104. الهمزة", "105. الفيل", "106. قريش", "107. الماعون", "108. الكوثر", "109. الكافرون", "110. النصر",
+        "111. المسد", "112. الإخلاص", "113. الفلق", "114. الناس"
+    ];
+SURAHS.forEach((s,i)=>SURAHS[i]=String(s).replace(/^\d+\.\s*/,''));
+const OWN=['tedate101@gmail.com'];
+const $=id=>document.getElementById(id),ar=n=>Number(n).toLocaleString('ar-EG');
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dayAgo=n=>{const d=new Date();d.setDate(d.getDate()-n);return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)};
+const msg=t=>{$('app').innerHTML='<div class="msg">'+t+'</div>'};
+let DATA=null;
+async function init(){
+  try{
+    const F=window.QuranFirebase;await F.ready;
+    if(!F.isLoggedIn){msg('سجّل الدخول أولًا بحساب المطوّر.');return}
+    if(!OWN.includes((F.user.email||'').toLowerCase())){msg('🚫 هذه الصفحة للمطوّر فقط.');return}
+    await load();
+  }catch(e){msg('تعذّر التحميل: '+esc(e&&e.code==='permission-denied'?'القواعد لم تُحدَّث بعد (ملف FIRESTORE_RULES.txt).':(e&&e.message)||e))}
+}
+async function load(){
+  const db=window.QuranFirebase.db,g=n=>db.collection(n).limit(500).get();
+  const [lb,st,rp,md]=await Promise.all([g('leaderboard'),g('stats'),g('reports'),g('moderation')]);
+  const stats={},users=[],ban={},reports={};
+  st.docs.forEach(d=>stats[d.id]=d.data());md.docs.forEach(d=>ban[d.id]=d.data());
+  lb.docs.forEach(d=>users.push({uid:d.id,...d.data()}));
+  rp.docs.forEach(d=>{const r=d.data(),k=r.reportedUid;(reports[k]=reports[k]||{uid:k,name:r.name,n:0,reasons:new Set(),ids:[]});reports[k].n++;reports[k].reasons.add(r.reason);reports[k].ids.push(d.id)});
+  DATA={stats,users,ban,reports};render();
+}
+function render(){
+  const {stats,users,ban,reports}=DATA,S=Object.values(stats);
+  const act=n=>S.filter(s=>s.lastDay&&s.lastDay>=dayAgo(n)).length,newU=S.filter(s=>s.joined&&s.joined>=dayAgo(6)).length;
+  const sumA=S.reduce((a,s)=>a+(s.ayahs||0),0),sumP=S.reduce((a,s)=>a+(s.pages||0),0);
+  const sc={};S.forEach(s=>Object.entries(s.recSurahs||{}).forEach(([k,v])=>sc[k]=(sc[k]||0)+v));
+  const top=Object.entries(sc).sort((a,b)=>b[1]-a[1]).slice(0,10),mx=top.length?top[0][1]:1;
+  const platform={};S.forEach(s=>platform[s.ua||'web']=(platform[s.ua||'web']||0)+1);
+  const rep=Object.values(reports).sort((a,b)=>b.n-a.n);
+  $('app').innerHTML=`
+  <div class="grid">
+    <div class="card k"><b>${ar(S.length)}</b><small>إجمالي المستخدمين</small></div>
+    <div class="card k"><b>${ar(act(0))}</b><small>نشطون اليوم</small></div>
+    <div class="card k"><b>${ar(act(6))}</b><small>نشطون آخر 7 أيام</small></div>
+    <div class="card k"><b>${ar(act(29))}</b><small>نشطون آخر 30 يومًا</small></div>
+    <div class="card k"><b>${ar(newU)}</b><small>مستخدمون جدد (7 أيام)</small></div>
+    <div class="card k"><b>${ar(sumA)}</b><small>آيات مُسمَّعة</small></div>
+    <div class="card k"><b>${ar(sumP)}</b><small>صفحات مقروءة</small></div>
+    <div class="card k"><b>${ar(rep.length)}</b><small>حسابات عليها بلاغات</small></div>
+  </div>
+  <div class="card"><h2 style="margin-top:0">📊 أكثر السور تسميعًا</h2><div class="bars">${top.length?top.map(([k,v])=>`<div class="r"><span>${esc(SURAHS[k-1])}</span><i style="width:${Math.max(4,v/mx*100)}%"></i><span>${ar(v)}</span></div>`).join(''):'لا بيانات بعد'}</div>
+    <div style="font-size:12px;color:#666;margin-top:8px">المنصات: ${Object.entries(platform).map(([k,v])=>k+' '+ar(v)).join(' • ')||'—'}</div></div>
+  <h2>🚩 البلاغات</h2><div class="card scroll">${rep.length?`<table><tr><th>الاسم</th><th>عدد البلاغات</th><th>الحالة</th><th></th></tr>${rep.map(r=>`<tr><td>${esc((ban[r.uid]&&ban[r.uid].rename)||r.name)}</td><td>${ar(r.n)}</td><td>${ban[r.uid]&&ban[r.uid].hidden?'<span class="tag">محجوب</span>':'ظاهر'}</td>
+    <td><button class="b1" onclick="act('ban','${esc(r.uid)}')">حجب</button> <button class="b3" onclick="act('rename','${esc(r.uid)}')">تغيير الاسم</button> <button class="b3" onclick="act('dismiss','${esc(r.uid)}')">تجاهل البلاغ</button></td></tr>`).join('')}</table>`:'لا توجد بلاغات 👍'}</div>
+  <h2>👥 المستخدمون في لوحة الشرف</h2><div class="card"><input id="q" placeholder="ابحث بالاسم..." oninput="renderUsers()"><div class="scroll" id="ut"></div></div>`;
+  renderUsers();
+}
+function renderUsers(){
+  const {stats,users,ban}=DATA,q=($('q')?$('q').value:'').trim();
+  const rows=users.filter(u=>!q||String(u.name||'').includes(q)).sort((a,b)=>(b.points||0)-(a.points||0)).slice(0,200);
+  $('ut').innerHTML=`<table><tr><th>الاسم</th><th>نقاط</th><th>قراءة</th><th>آخر نشاط</th><th>الحالة</th><th></th></tr>${rows.map(u=>{const b=ban[u.uid]||{};
+   return `<tr><td>${esc(b.rename||u.name)}${u.badge==='owner'?' ✔':''}</td><td>${ar(u.points||0)}</td><td>${ar(u.readPts||0)}</td><td>${esc((stats[u.uid]||{}).lastDay||'—')}</td><td>${b.hidden?'<span class="tag">محجوب</span>':(b.rename?'معاد تسميته':'ظاهر')}</td>
+   <td>${u.badge==='owner'?'':(b.hidden?`<button class="b2" onclick="act('unban','${esc(u.uid)}')">إظهار</button>`:`<button class="b1" onclick="act('ban','${esc(u.uid)}')">حجب</button>`)} <button class="b3" onclick="act('rename','${esc(u.uid)}')">اسم جديد</button></td></tr>`}).join('')}</table>`;
+}
+async function act(kind,uid){
+  const db=window.QuranFirebase.db,ts=firebase.firestore.FieldValue.serverTimestamp();
+  try{
+    if(kind==='ban')await db.collection('moderation').doc(uid).set({hidden:true,at:ts},{merge:true});
+    else if(kind==='unban')await db.collection('moderation').doc(uid).set({hidden:false,at:ts},{merge:true});
+    else if(kind==='rename'){const n=prompt('الاسم البديل الذي سيظهر للجميع (فارغ = إلغاء التغيير):','لاعب');if(n===null)return;
+      await db.collection('moderation').doc(uid).set({rename:n.trim().slice(0,30),at:ts},{merge:true})}
+    else if(kind==='dismiss'){const ids=(DATA.reports[uid]||{ids:[]}).ids;await Promise.all(ids.map(i=>db.collection('reports').doc(i).delete()))}
+    await load();
+  }catch(e){alert('فشل التنفيذ: '+(e&&e.message||e))}
+}
+init();
+</script></body></html>
